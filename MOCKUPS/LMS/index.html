@@ -1,1 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calabrian Formation School — Student Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-900:#0F2748;
+    --navy-800:#16345E;
+    --blue-600:#2C5AA0;
+    --blue-500:#3E71BE;
+    --blue-100:#E8EFF9;
+    --blue-050:#F4F7FC;
+    --gold-500:#D9A441;
+    --gold-600:#BE8A28;
+    --gold-100:#F7EAC9;
+    --white:#FFFFFF;
+    --ink-900:#182333;
+    --ink-600:#4C596B;
+    --ink-400:#8592A3;
+    --line:#DDE4EE;
+    --line-soft:#EAEFF6;
+    --good:#2E7D5B;
+    --radius-s:4px;
+    --radius-m:8px;
+    --shadow-card: 0 1px 2px rgba(15,39,72,0.06);
+  }
 
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--ink-900);
+    background:var(--blue-050);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  ::selection{background:var(--gold-100);}
+
+  [data-view]{display:none;}
+  [data-view].active{display:block;}
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; animation:none !important;}
+  }
+
+  /* =========================================================
+     AUTH VIEW
+     ========================================================= */
+  .auth-shell{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns: 1.05fr 1fr;
+  }
+  @media (max-width:860px){
+    .auth-shell{grid-template-columns:1fr;}
+    .auth-brand{min-height:220px;}
+  }
+
+  .auth-brand{
+    position:relative;
+    background:
+      radial-gradient(circle at 18% 22%, rgba(217,164,65,0.18), transparent 42%),
+      linear-gradient(160deg, var(--navy-900) 0%, var(--navy-800) 55%, var(--blue-600) 130%);
+    color:var(--white);
+    padding:56px 56px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    overflow:hidden;
+  }
+  .auth-brand::after{
+    content:"";
+    position:absolute;
+    right:-120px; bottom:-160px;
+    width:420px; height:420px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.14);
+  }
+  .auth-brand::before{
+    content:"";
+    position:absolute;
+    right:-40px; bottom:-60px;
+    width:260px; height:260px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.10);
+  }
+  .brand-mark{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    position:relative;
+    z-index:1;
+  }
+  .brand-crest{
+    width:38px;height:38px;
+    border-radius:8px;
+    background:var(--gold-500);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    color:var(--navy-900);
+    font-size:18px;
+  }
+  .brand-name{
+    font-size:16px;
+    letter-spacing:0.02em;
+    font-weight:600;
+    font-family:'IBM Plex Sans',sans-serif;
+  }
+  .brand-copy{
+    position:relative;
+    z-index:1;
+    max-width:420px;
+  }
+  .brand-copy h1{
+    font-size:38px;
+    line-height:1.15;
+    color:var(--white);
+    margin-bottom:16px;
+  }
+  .brand-copy p{
+    font-size:15px;
+    line-height:1.6;
+    color:rgba(255,255,255,0.72);
+    margin:0;
+  }
+  .brand-quote{
+    position:relative;
+    z-index:1;
+    border-left:2px solid var(--gold-500);
+    padding-left:16px;
+    font-size:13px;
+    color:rgba(255,255,255,0.6);
+    line-height:1.6;
+  }
+
+  .auth-panel{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 24px;
+  }
+  .auth-card{
+    width:100%;
+    max-width:360px;
+  }
+  .auth-card h2{
+    font-size:26px;
+    margin-bottom:6px;
+  }
+  .auth-sub{
+    color:var(--ink-600);
+    font-size:14px;
+    margin-bottom:32px;
+  }
+  .field{
+    margin-bottom:18px;
+  }
+  .field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--ink-600);
+    margin-bottom:6px;
+  }
+  .field input, .field select{
+    width:100%;
+    padding:11px 13px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-s);
+    font-size:14.5px;
+    font-family:inherit;
+    color:var(--ink-900);
+    background:var(--white);
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .field input:focus, .field select:focus{
+    outline:none;
+    border-color:var(--blue-500);
+    box-shadow:0 0 0 3px var(--blue-100);
+  }
+  .row-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .btn-primary{
+    width:100%;
+    padding:12px 16px;
+    background:var(--navy-900);
+    color:var(--white);
+    border:none;
+    border-radius:var(--radius-s);
+    font-size:14.5px;
+    font-weight:600;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover{background:var(--blue-600);}
+  .btn-primary:focus-visible{outline:2px solid var(--gold-500); outline-offset:2px;}
+
+  .auth-switch{
+    text-align:center;
+    margin-top:22px;
+    font-size:13.5px;
+    color:var(--ink-600);
+  }
+  .auth-switch button{
+    background:none;border:none;
+    color:var(--blue-600);
+    font-weight:600;
+    font-size:13.5px;
+    padding:0;
+  }
+  .auth-switch button:hover{text-decoration:underline;}
+
+  .auth-divider{
+    display:flex;align-items:center;gap:12px;
+    margin:24px 0;
+    color:var(--ink-400);
+    font-size:12px;
+  }
+  .auth-divider::before,.auth-divider::after{
+    content:"";flex:1;height:1px;background:var(--line);
+  }
+
+  .role-note{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:var(--gold-100);
+    border:1px solid #EFD9A0;
+    border-radius:var(--radius-s);
+    padding:10px 12px;
+    font-size:12.5px;
+    color:#6B5119;
+    margin-bottom:20px;
+    line-height:1.5;
+  }
+
+  /* =========================================================
+     APP SHELL (dashboard + course)
+     ========================================================= */
+  .app-shell{
+    display:grid;
+    grid-template-columns:236px 1fr;
+    min-height:100vh;
+  }
+  @media (max-width:780px){
+    .app-shell{grid-template-columns:64px 1fr;}
+    .side-label{display:none;}
+    .sidebar{padding-left:0;padding-right:0;align-items:center;}
+    .side-item{justify-content:center; padding:12px 0; width:44px;}
+    .brand-mark.side{padding:0 0 24px 0; justify-content:center;}
+    .brand-name.side{display:none;}
+  }
+
+  .sidebar{
+    background:var(--navy-900);
+    color:rgba(255,255,255,0.82);
+    padding:22px 18px;
+    display:flex;
+    flex-direction:column;
+  }
+  .brand-mark.side{padding-bottom:28px;}
+  .side-nav{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    margin-top:8px;
+  }
+  .side-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 12px;
+    border-radius:var(--radius-s);
+    font-size:14px;
+    color:rgba(255,255,255,0.68);
+    border-left:2px solid transparent;
+  }
+  .side-item svg{flex-shrink:0;}
+  .side-item.active{
+    background:rgba(255,255,255,0.06);
+    color:var(--white);
+    border-left:2px solid var(--gold-500);
+  }
+  .side-item:not(.active):hover{
+    background:rgba(255,255,255,0.04);
+    color:var(--white);
+  }
+  .sidebar-foot{
+    margin-top:auto;
+    padding-top:16px;
+    border-top:1px solid rgba(255,255,255,0.10);
+    font-size:11.5px;
+    color:rgba(255,255,255,0.4);
+    line-height:1.5;
+  }
+
+  .main{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+  }
+  .topbar{
+    height:64px;
+    background:var(--white);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+  }
+  .topbar h2{font-size:16px;}
+  .topbar-meta{font-size:12.5px;color:var(--ink-400);}
+  .user-chip{
+    display:flex;align-items:center;gap:10px;
+  }
+  .avatar{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--blue-100);
+    color:var(--blue-600);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:600;font-size:13px;
+    font-family:'Fraunces',serif;
+  }
+  .user-chip-name{font-size:13.5px;font-weight:600;}
+  .user-chip-role{font-size:11.5px;color:var(--ink-400);}
+
+  .content{
+    padding:32px 28px 60px;
+    flex:1;
+  }
+  .content-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .content-head h1{font-size:24px;}
+  .content-head p{
+    color:var(--ink-600);
+    font-size:13.5px;
+    margin-top:4px;
+  }
+
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-bottom:30px;
+  }
+  @media (max-width:640px){.stat-row{grid-template-columns:1fr;}}
+  .stat{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    padding:16px 18px;
+  }
+  .stat .n{
+    font-family:'Fraunces',serif;
+    font-size:26px;
+    font-weight:600;
+  }
+  .stat .l{
+    font-size:12.5px;
+    color:var(--ink-600);
+    margin-top:2px;
+  }
+  .stat.gold .n{color:var(--gold-600);}
+  .stat.blue .n{color:var(--blue-600);}
+
+  .section-label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-600);
+    margin:0 0 14px;
+  }
+
+  .course-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px,1fr));
+    gap:16px;
+  }
+  .course-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    padding:0;
+    overflow:hidden;
+    text-align:left;
+    width:100%;
+    box-shadow:var(--shadow-card);
+    transition:border-color .15s ease, transform .12s ease;
+  }
+  .course-card:hover{border-color:var(--blue-500); transform:translateY(-1px);}
+  .course-card:focus-visible{outline:2px solid var(--gold-500); outline-offset:2px;}
+  .course-card-top{
+    padding:16px 18px 14px;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .course-icon{
+    width:34px;height:34px;
+    border-radius:7px;
+    background:var(--navy-900);
+    color:var(--gold-500);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:12px;
+  }
+  .course-card h3{
+    font-size:16.5px;
+    margin-bottom:3px;
+  }
+  .course-teacher{
+    font-size:12.5px;
+    color:var(--ink-600);
+  }
+  .course-card-bottom{
+    padding:12px 18px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .grade-pill{
+    font-size:11px;
+    font-weight:600;
+    color:var(--blue-600);
+    background:var(--blue-100);
+    padding:4px 9px;
+    border-radius:20px;
+  }
+  .pending-count{
+    font-size:12px;
+    color:var(--ink-600);
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .pending-count .dot{
+    width:6px;height:6px;border-radius:50%;background:var(--gold-500);
+  }
+  .pending-count.zero{color:var(--ink-400);}
+  .pending-count.zero .dot{background:var(--ink-400);}
+
+  /* =========================================================
+     COURSE DETAIL VIEW
+     ========================================================= */
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    color:var(--ink-600);
+    margin-bottom:16px;
+    border:none;background:none;padding:0;
+  }
+  .back-link:hover{color:var(--blue-600);}
+
+  .course-header{
+    background:linear-gradient(120deg, var(--navy-900), var(--blue-600) 140%);
+    border-radius:var(--radius-m);
+    padding:26px 28px;
+    color:var(--white);
+    margin-bottom:26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .course-header::after{
+    content:"";
+    position:absolute; right:-40px; top:-60px;
+    width:180px;height:180px;border-radius:50%;
+    border:1px solid rgba(255,255,255,0.14);
+  }
+  .course-header .eyebrow{
+    font-size:12.5px;
+    color:var(--gold-500);
+    font-weight:600;
+    margin-bottom:8px;
+    position:relative;z-index:1;
+  }
+  .course-header h1{
+    color:var(--white);
+    font-size:26px;
+    margin-bottom:10px;
+    position:relative;z-index:1;
+  }
+  .course-header-meta{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    font-size:13px;
+    color:rgba(255,255,255,0.78);
+    position:relative;z-index:1;
+  }
+
+  .tabs{
+    display:flex;
+    gap:4px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:24px;
+  }
+  .tab{
+    padding:10px 4px;
+    margin-right:22px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink-400);
+    border-bottom:2px solid transparent;
+    background:none;border:none;
+  }
+  .tab.active{
+    color:var(--navy-900);
+    border-bottom:2px solid var(--gold-500);
+  }
+  .tab:not(.active):hover{color:var(--ink-600);}
+
+  .work-columns{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    align-items:start;
+  }
+  @media (max-width:760px){.work-columns{grid-template-columns:1fr;}}
+
+  .work-col-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+  }
+  .work-col-head h4{
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .count-badge{
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--ink-600);
+    background:var(--blue-050);
+    border:1px solid var(--line);
+    padding:2px 8px;
+    border-radius:20px;
+  }
+
+  .work-item{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-s);
+    padding:14px 16px;
+    margin-bottom:10px;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .work-check{
+    width:19px;height:19px;
+    border-radius:50%;
+    border:2px solid var(--line);
+    flex-shrink:0;
+    margin-top:2px;
+    display:flex;align-items:center;justify-content:center;
+    background:none;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .work-check:hover{border-color:var(--blue-500);}
+  .work-item.done .work-check{
+    background:var(--good);
+    border-color:var(--good);
+  }
+  .work-check svg{opacity:0; transition:opacity .12s ease;}
+  .work-item.done .work-check svg{opacity:1;}
+
+  .work-body{flex:1; min-width:0;}
+  .work-title{
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:3px;
+  }
+  .work-item.done .work-title{
+    color:var(--ink-600);
+  }
+  .work-sub{
+    font-size:12px;
+    color:var(--ink-400);
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .due-soon{color:var(--gold-600); font-weight:600;}
+  .score-chip{
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--good);
+  }
+  .type-tag{
+    font-size:10.5px;
+    text-transform:none;
+    color:var(--ink-400);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:1px 6px;
+  }
+
+  .empty-state{
+    border:1px dashed var(--line);
+    border-radius:var(--radius-s);
+    padding:22px 16px;
+    text-align:center;
+    color:var(--ink-400);
+    font-size:13px;
+  }
+
+  .visually-hidden{
+    position:absolute; width:1px;height:1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     AUTH VIEW
+     ========================================================= -->
+<div data-view="auth" class="active">
+  <div class="auth-shell">
+    <div class="auth-brand">
+      <div class="brand-mark">
+        <div class="brand-crest">C</div>
+        <div class="brand-name">CALABRIAN FORMATION SCHOOL</div>
+      </div>
+      <div class="brand-copy">
+        <h1>Everything for your classes, in one place.</h1>
+        <p>See what's assigned, what's due, and what you've already finished — across every course, all in one portal.</p>
+      </div>
+      <div class="brand-quote">
+        Student portal for the 2026–27 school year. Use the email address your teacher gave you to sign in.
+      </div>
+    </div>
+
+    <div class="auth-panel">
+      <!-- LOGIN -->
+      <div class="auth-card" id="login-card">
+        <h2>Sign in</h2>
+        <p class="auth-sub">Welcome back — pick up where you left off.</p>
+
+        <form onsubmit="return false;">
+          <div class="field">
+            <label for="login-email">School email</label>
+            <input id="login-email" type="email" placeholder="bryan.rojas@cfs.edu.ph" value="bryan.rojas@cfs.edu.ph" />
+          </div>
+          <div class="field">
+            <label for="login-pass">Password</label>
+            <input id="login-pass" type="password" placeholder="••••••••" value="••••••••" />
+          </div>
+          <button class="btn-primary" onclick="showView('dashboard')">Sign in</button>
+        </form>
+
+        <div class="auth-switch">
+          Don't have an account? <button onclick="toggleAuth('register')">Register</button>
+        </div>
+      </div>
+
+      <!-- REGISTER -->
+      <div class="auth-card" id="register-card" style="display:none;">
+        <h2>Create your account</h2>
+        <p class="auth-sub">Use the enrollment code from your homeroom teacher.</p>
+
+        <div class="role-note">
+          Registering as a <strong>student</strong>. Teachers and staff should use the staff portal instead.
+        </div>
+
+        <form onsubmit="return false;">
+          <div class="row-2">
+            <div class="field">
+              <label for="reg-first">First name</label>
+              <input id="reg-first" type="text" placeholder="Bryan" />
+            </div>
+            <div class="field">
+              <label for="reg-last">Last name</label>
+              <input id="reg-last" type="text" placeholder="Rojas" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="reg-email">School email</label>
+            <input id="reg-email" type="email" placeholder="bryan.rojas@cfs.edu.ph" />
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label for="reg-grade">Grade level</label>
+              <select id="reg-grade">
+                <option>Grade 1</option>
+                <option>Grade 2</option>
+                <option>Grade 3</option>
+                <option>Grade 4</option>
+                <option>Grade 5</option>
+                <option selected>Grade 6</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="reg-code">Enrollment code</label>
+              <input id="reg-code" type="text" placeholder="NBA-2026" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="reg-pass">Password</label>
+            <input id="reg-pass" type="password" placeholder="Create a password" />
+          </div>
+          <button class="btn-primary" onclick="showView('dashboard')">Create account</button>
+        </form>
+
+        <div class="auth-switch">
+          Already registered? <button onclick="toggleAuth('login')">Sign in</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     DASHBOARD VIEW
+     ========================================================= -->
+<div data-view="dashboard">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-mark side">
+        <div class="brand-crest">C</div>
+        <div class="brand-name side">CALABRIAN</div>
+      </div>
+      <nav class="side-nav">
+        <a class="side-item active" href="#">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span class="side-label">My courses</span>
+        </a>
+        <a class="side-item" href="#">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+          <span class="side-label">Calendar</span>
+        </a>
+        <a class="side-item" href="#">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span class="side-label">To-do</span>
+        </a>
+        <a class="side-item" href="#">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-6"/></svg>
+          <span class="side-label">Grades</span>
+        </a>
+        <a class="side-item" href="#">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <span class="side-label">Profile</span>
+        </a>
+      </nav>
+      <div class="sidebar-foot side-label">
+        Signed in as<br/>Bryan Rojas · Grade 6
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <h2>My courses</h2>
+        <div class="user-chip">
+          <div style="text-align:right;">
+            <div class="user-chip-name">Bryan Rojas</div>
+            <div class="user-chip-role">Grade 6 · Student</div>
+          </div>
+          <div class="avatar">BR</div>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="content-head">
+          <div>
+            <h1>Good afternoon, Bryan</h1>
+            <p>9 courses this term · school year 2026&ndash;27</p>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat gold">
+            <div class="n">11</div>
+            <div class="l">Activities pending across all subjects</div>
+          </div>
+          <div class="stat blue">
+            <div class="n">3</div>
+            <div class="l">Due within the next 3 days</div>
+          </div>
+          <div class="stat">
+            <div class="n">94%</div>
+            <div class="l">Average completion this term</div>
+          </div>
+        </div>
+
+        <p class="section-label">Enrolled subjects</p>
+        <div class="course-grid">
+
+          <button class="course-card" onclick="openCourse('ap')">
+            <div class="course-card-top">
+              <div class="course-icon">AP</div>
+              <h3>Araling Panlipunan</h3>
+              <div class="course-teacher">Mrs. Castro</div>
+            </div>
+            <div class="course-card-bottom">
+              <span class="grade-pill">Grade 6</span>
+              <span class="pending-count"><span class="dot"></span>2 pending</span>
+            </div>
+          </button>
+
+          <button class="course-card" onclick="openCourse('mapeh')">
+            <div class="course-card-top">
+              <div class="course-icon">Ma</div>
+              <h3>MAPEH</h3>
+              <div class="course-teacher">Mr. Bautista</div>
+            </div>
+            <div class="course-card-bottom">
+              <span class="grade-pill">Grade 6</span>
+              <span class="pending-count"><span class="dot"></span>1 pending</span>
+            </div>
+          </button>
+
+          <button class="course-card" onclick="openCourse('math')">
+            <div class="course-card-top">
+              <div class="course-icon">Mt</div>
+              <h3>Math</h3>
+              <div class="course-teacher">Mrs. Santos</div>
+            </div>
+            <div class="course-card-bottom">
+              <span class="grade-pill">Grade 6</span>
+              <span class="pending-count"><span class="dot"></span>3 pending</span>
+            </div>
+          </button>
+
+          <button class="course-card" onclick="openCourse('filipino')">
+            <div class="course-card-top">
+              <div class="course-icon">Fi</div>
+              <h3>Filipino</h3>
+              <div class="course-teacher">Ms. Ramos</div>
+            </div>
+            <div class="course-card-bottom">
+              <span class="grade-pill">Grade 6</span>
+              <span class="pending-count"><span class="dot"></span>1 pending</span>
+            </div>
+          </button>
+
+          <button class="course-card" onclick="openCourse('science')">
+            <div class="course-card-top">
+              <div class="course-icon">Sc</div>
+              <h3>Science</h3>
+              <div class="course-teacher">Mr. Cruz</div>
+            </div>
+            <div class="course-card-bottom">
+              <span class="grade-pill">Grade 6</span>
+              <span class="pending-count"><span class="dot"></span>2 pending</span>
+            </div>
+          </button>
+
+          <button class="course-card" onclick="openCourse('tle')">
+            <div class="course-card-top">
+              <div class="course-icon">TL</div>
+              <h3>Technical Livelihood Education</h3>
+              <div class="course-teacher">Mrs. Aquino</div>
+            </div>
+            <div class="course-card-bottom">
+              <span class="grade-pill">Grade 6</span>
+              <span class="pending-count zero"><span class="dot"></span>All done</span>
+            </div>
+          </button>
+
+          <button class="course-card" onclick="openCourse('computer')">
+            <div class="course-card-top">
+              <div class="course-icon">Co</div>
+              <h3>Computer</h3>
+              <div class="course-teacher">Ms. Gercan</div>
+            </div>
+            <div class="course-card-bottom">
+              <span class="grade-pill">Grade 6</span>
+              <span class="pending-count"><span class="dot"></span>1 pending</span>
+            </div>
+          </button>
+
+          <button class="course-card" onclick="openCourse('cle')">
+            <div class="course-card-top">
+              <div class="course-icon">CL</div>
+              <h3>Christian Living Education</h3>
+              <div class="course-teacher">Ms. Villanueva</div>
+            </div>
+            <div class="course-card-bottom">
+              <span class="grade-pill">Grade 6</span>
+              <span class="pending-count zero"><span class="dot"></span>All done</span>
+            </div>
+          </button>
+
+          <button class="course-card" onclick="openCourse('english')">
+            <div class="course-card-top">
+              <div class="course-icon">En</div>
+              <h3>English</h3>
+              <div class="course-teacher">Mrs. Whitfield</div>
+            </div>
+            <div class="course-card-bottom">
+              <span class="grade-pill">Grade 6</span>
+              <span class="pending-count"><span class="dot"></span>1 pending</span>
+            </div>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     COURSE DETAIL VIEW
+     ========================================================= -->
+<div data-view="course">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-mark side">
+        <div class="brand-crest">C</div>
+        <div class="brand-name side">CALABRIAN</div>
+      </div>
+      <nav class="side-nav">
+        <a class="side-item active" href="#">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span class="side-label">My courses</span>
+        </a>
+        <a class="side-item" href="#">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+          <span class="side-label">Calendar</span>
+        </a>
+        <a class="side-item" href="#">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span class="side-label">To-do</span>
+        </a>
+        <a class="side-item" href="#">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-6"/></svg>
+          <span class="side-label">Grades</span>
+        </a>
+        <a class="side-item" href="#">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <span class="side-label">Profile</span>
+        </a>
+      </nav>
+      <div class="sidebar-foot side-label">
+        Signed in as<br/>Bryan Rojas · Grade 6
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <h2 id="course-topbar-title">Course</h2>
+        <div class="user-chip">
+          <div style="text-align:right;">
+            <div class="user-chip-name">Bryan Rojas</div>
+            <div class="user-chip-role">Grade 6 · Student</div>
+          </div>
+          <div class="avatar">JR</div>
+        </div>
+      </header>
+
+      <div class="content">
+        <button class="back-link" onclick="showView('dashboard')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg>
+          Back to my courses
+        </button>
+
+        <div class="course-header">
+          <div class="eyebrow" id="course-eyebrow">GRADE 6</div>
+          <h1 id="course-title">Araling Panlipunan</h1>
+          <div class="course-header-meta">
+            <span id="course-teacher-line">Taught by Ms. Domingo</span>
+            <span id="course-room-line">Room 6-A · Mon &amp; Wed, 9:00&ndash;9:50</span>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active">Classwork</button>
+          <button class="tab">Stream</button>
+          <button class="tab">People</button>
+        </div>
+
+        <div class="work-columns" id="work-columns">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const courses = {
+    ap: {
+      title: "Araling Panlipunan",
+      teacher: "Ms. Domingo",
+      grade: "GRADE 6",
+      room: "Room 6-A · Mon & Wed, 9:00–9:50",
+      pending: [
+        { title: "Sanaysay: Kahalagahan ng Wastong Pamamahala", due: "Due tomorrow, 5:00 PM", soon: true, type: "Sanaysay" },
+        { title: "Basahin: Yunit 3 — Ang Pamahalaang Lokal", due: "Due Sep 14", type: "Reading" },
+      ],
+      done: [
+        { title: "Pagsusulit sa Yunit 2", score: "90/100" },
+        { title: "Graphic organizer: Sangay ng Pamahalaan", score: "Complete" },
+      ]
+    },
+    mapeh: {
+      title: "MAPEH",
+      teacher: "Mr. Bautista",
+      grade: "GRADE 6",
+      room: "Covered Court · Tue & Thu, 10:00–10:50",
+      pending: [
+        { title: "Folk dance performance: Tinikling", due: "Due Sep 15", type: "Performance task" },
+      ],
+      done: [
+        { title: "Music: Note reading quiz", score: "Complete" },
+        { title: "Health: Nutrition poster", score: "Complete" },
+        { title: "PE: Fitness test", score: "Complete" },
+      ]
+    },
+    math: {
+      title: "Math",
+      teacher: "Mrs. Santos",
+      grade: "GRADE 6",
+      room: "Room 6-A · Mon, Wed & Fri, 8:00–8:50",
+      pending: [
+        { title: "Worksheet: Ratio and Proportion", due: "Due tomorrow, 8:00 AM", soon: true, type: "Worksheet" },
+        { title: "Problem set: Operations on Fractions", due: "Due Sep 13", type: "Problem set" },
+        { title: "Module 4 quiz: Integers", due: "Due Sep 16", type: "Quiz" },
+      ],
+      done: [
+        { title: "Long test: Decimals", score: "88/100" },
+        { title: "Seatwork: Order of operations", score: "Complete" },
+      ]
+    },
+    filipino: {
+      title: "Filipino",
+      teacher: "Ms. Ramos",
+      grade: "GRADE 6",
+      room: "Room 6-A · Tue & Thu, 9:00–9:50",
+      pending: [
+        { title: "Pagbasa: Maikling Kuwento — Unang Bahagi", due: "Due Sep 12", type: "Pagbasa" },
+      ],
+      done: [
+        { title: "Pagsasanay sa Gramatika", score: "Complete" },
+        { title: "Pagsusulit: Aralin 5", score: "94/100" },
+      ]
+    },
+    science: {
+      title: "Science",
+      teacher: "Mr. Cruz",
+      grade: "GRADE 6",
+      room: "Science Room · Mon & Wed, 10:00–10:50",
+      pending: [
+        { title: "Lab report: States of Matter", due: "Due Sep 14", type: "Lab report" },
+        { title: "Reading: The Water Cycle", due: "Due Sep 17", type: "Reading" },
+      ],
+      done: [
+        { title: "Quiz: Parts of the Ecosystem", score: "91/100" },
+        { title: "Diagram: The Solar System", score: "Complete" },
+        { title: "Lab safety agreement", score: "Complete" },
+      ]
+    },
+    tle: {
+      title: "Technical Livelihood Education",
+      teacher: "Mrs. Aquino",
+      grade: "GRADE 6",
+      room: "TLE Room · Fri, 1:00–2:40",
+      pending: [],
+      done: [
+        { title: "Project: Basic Sewing Stitches", score: "Complete" },
+        { title: "Written test: Kitchen Safety", score: "89/100" },
+      ]
+    },
+    computer: {
+      title: "Computer",
+      teacher: "Mr. Reyes",
+      grade: "GRADE 6",
+      room: "Computer Lab · Thu, 1:00–1:50",
+      pending: [
+        { title: "Activity: Basic Spreadsheet Formulas", due: "Due Sep 15", type: "Activity" },
+      ],
+      done: [
+        { title: "Typing speed test", score: "Complete" },
+        { title: "Quiz: Parts of a Computer", score: "93/100" },
+      ]
+    },
+    cle: {
+      title: "Christian Living Education",
+      teacher: "Ms. Villanueva",
+      grade: "GRADE 6",
+      room: "Room 6-A · Fri, 8:00–8:50",
+      pending: [],
+      done: [
+        { title: "Reflection paper: Fruits of the Spirit", score: "Complete" },
+        { title: "Memory verse recitation", score: "Complete" },
+      ]
+    },
+    english: {
+      title: "English",
+      teacher: "Mrs. Whitfield",
+      grade: "GRADE 6",
+      room: "Room 6-A · Tue & Thu, 8:00–8:50",
+      pending: [
+        { title: "Reading response: Short Story Unit", due: "Due Sep 13", type: "Reading" },
+      ],
+      done: [
+        { title: "Grammar quiz: Subject-verb agreement", score: "Complete" },
+        { title: "Vocabulary quiz: Unit 4", score: "Complete" },
+      ]
+    },
+  };
+
+  function toggleAuth(which){
+    document.getElementById('login-card').style.display = which === 'login' ? 'block' : 'none';
+    document.getElementById('register-card').style.display = which === 'register' ? 'block' : 'none';
+  }
+
+  function showView(name){
+    document.querySelectorAll('[data-view]').forEach(el => el.classList.remove('active'));
+    document.querySelector('[data-view="' + name + '"]').classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  function openCourse(id){
+    const c = courses[id];
+    if(!c) return;
+
+    document.getElementById('course-topbar-title').textContent = c.title;
+    document.getElementById('course-eyebrow').textContent = c.grade;
+    document.getElementById('course-title').textContent = c.title;
+    document.getElementById('course-teacher-line').textContent = 'Taught by ' + c.teacher;
+    document.getElementById('course-room-line').textContent = c.room;
+
+    const wrap = document.getElementById('work-columns');
+    wrap.innerHTML = '';
+
+    const pendingCol = document.createElement('div');
+    pendingCol.innerHTML =
+      '<div class="work-col-head"><h4>Pending</h4><span class="count-badge">' + c.pending.length + '</span></div>';
+    if(c.pending.length === 0){
+      pendingCol.innerHTML += '<div class="empty-state">Nothing pending. New work will show up here.</div>';
+    } else {
+      c.pending.forEach((item, i) => {
+        pendingCol.innerHTML +=
+          '<div class="work-item" id="pending-' + i + '">' +
+            '<button class="work-check" onclick="markDone(\'' + id + '\',' + i + ')" aria-label="Mark as done">' +
+              '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>' +
+            '</button>' +
+            '<div class="work-body">' +
+              '<div class="work-title">' + item.title + '</div>' +
+              '<div class="work-sub"><span class="' + (item.soon ? 'due-soon' : '') + '">' + item.due + '</span><span class="type-tag">' + item.type + '</span></div>' +
+            '</div>' +
+          '</div>';
+      });
+    }
+
+    const doneCol = document.createElement('div');
+    doneCol.innerHTML =
+      '<div class="work-col-head"><h4>Completed</h4><span class="count-badge">' + c.done.length + '</span></div>';
+    if(c.done.length === 0){
+      doneCol.innerHTML += '<div class="empty-state">Completed work will appear here.</div>';
+    } else {
+      c.done.forEach(item => {
+        doneCol.innerHTML +=
+          '<div class="work-item done">' +
+            '<div class="work-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>' +
+            '<div class="work-body">' +
+              '<div class="work-title">' + item.title + '</div>' +
+              '<div class="work-sub"><span class="score-chip">' + item.score + '</span></div>' +
+            '</div>' +
+          '</div>';
+      });
+    }
+
+    wrap.appendChild(pendingCol);
+    wrap.appendChild(doneCol);
+
+    showView('course');
+  }
+
+  function markDone(courseId, index){
+    const el = document.getElementById('pending-' + index);
+    if(el){
+      el.classList.add('done');
+      setTimeout(() => { el.style.opacity = '0.5'; }, 150);
+    }
+  }
+</script>
+
+</body>
+</html>

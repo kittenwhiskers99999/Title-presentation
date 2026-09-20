@@ -1,1 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calabrian Formation School, Inc. — Forming Hearts, Shaping Minds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-900:#0F2748;
+    --navy-800:#16345E;
+    --navy-700:#1D4074;
+    --blue-600:#2C5AA0;
+    --blue-500:#3E71BE;
+    --blue-100:#E8EFF9;
+    --blue-050:#F4F7FC;
+    --gold-500:#D9A441;
+    --gold-600:#BE8A28;
+    --gold-100:#F7EAC9;
+    --white:#FFFFFF;
+    --ink-900:#182333;
+    --ink-600:#4C596B;
+    --ink-400:#8592A3;
+    --line:#DDE4EE;
+    --line-soft:#EAEFF6;
+    --radius-s:4px;
+    --radius-m:10px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--ink-900);
+    background:var(--white);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+    line-height:1.15;
+  }
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer;}
+  img,svg{display:block;}
+  ::selection{background:var(--gold-100);}
+  @media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important;}}
 
+  /* ---------- image placeholders ---------- */
+  .ph{
+    position:relative;
+    background:
+      repeating-linear-gradient(135deg, var(--blue-100) 0px, var(--blue-100) 12px, var(--blue-050) 12px, var(--blue-050) 24px);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--blue-600);
+    overflow:hidden;
+  }
+  .ph::after{
+    content:attr(data-label);
+    position:absolute;
+    bottom:10px; left:10px; right:10px;
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:10.5px; font-weight:600; letter-spacing:0.02em;
+    color:var(--navy-900);
+    background:rgba(255,255,255,0.88);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:5px 8px;
+    text-align:center;
+  }
+  .ph svg{width:36px; height:36px; opacity:0.55;}
+
+  /* =========================================================
+     TOP UTILITY BAR + HEADER
+     ========================================================= */
+  .utility-bar{
+    background:var(--navy-900);
+    color:rgba(255,255,255,0.72);
+    font-size:12px;
+    padding:8px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+  }
+  .utility-links{display:flex; gap:22px; flex-wrap:wrap;}
+  .utility-links a:hover{color:var(--white);}
+  .utility-contact{display:flex; gap:18px; flex-wrap:wrap;}
+  @media (max-width:760px){.utility-contact{display:none;}}
+
+  .site-header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,0.97);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 32px; height:78px;
+  }
+  .crest-mark{display:flex; align-items:center; gap:13px;}
+  .crest{
+    width:44px; height:44px; border-radius:50%;
+    background:var(--navy-900); color:var(--gold-500);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:700; font-size:19px;
+    border:2px solid var(--gold-500); flex-shrink:0;
+  }
+  .school-title{
+    font-family:'Fraunces',serif; font-size:18px; font-weight:600; line-height:1.15;
+  }
+  .school-title small{
+    display:block; font-family:'IBM Plex Sans',sans-serif;
+    font-size:10px; font-weight:600; letter-spacing:0.1em;
+    color:var(--ink-400); margin-top:3px;
+  }
+  .main-nav{display:flex; gap:28px;}
+  .main-nav a{
+    font-size:13.5px; font-weight:600; color:var(--ink-600);
+    padding:10px 0; border-bottom:2px solid transparent;
+  }
+  .main-nav a:hover, .main-nav a.active{color:var(--navy-900); border-bottom-color:var(--gold-500);}
+  .header-cta{
+    background:var(--navy-900); color:var(--white); border:none;
+    padding:11px 20px; border-radius:var(--radius-s);
+    font-size:13px; font-weight:700;
+    transition:background .15s ease;
+  }
+  .header-cta:hover{background:var(--blue-600);}
+  .nav-toggle{display:none; background:none; border:none; color:var(--navy-900);}
+  @media (max-width:980px){
+    .main-nav{display:none;}
+    .nav-toggle{display:flex;}
+    .site-header{padding:0 20px;}
+    .utility-bar{padding:8px 20px;}
+  }
+
+  /* =========================================================
+     HERO
+     ========================================================= */
+  .hero{
+    position:relative;
+    min-height:520px;
+    display:flex; align-items:flex-end;
+    background:var(--navy-900);
+    overflow:hidden;
+  }
+  .hero .ph{
+    position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(135deg, #24406B 0px, #24406B 14px, #1D3760 14px, #1D3760 28px);
+    color:rgba(255,255,255,0.4);
+  }
+  .hero .ph::after{
+    bottom:auto; top:16px; left:auto; right:16px; width:auto;
+    background:rgba(15,39,72,0.75); border-color:rgba(255,255,255,0.25); color:rgba(255,255,255,0.85);
+  }
+  .hero-overlay{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(15,39,72,0.25) 0%, rgba(15,39,72,0.55) 45%, rgba(15,39,72,0.92) 100%);
+  }
+  .hero-inner{
+    position:relative; z-index:2;
+    max-width:1280px; margin:0 auto; width:100%;
+    padding:60px 32px 64px;
+    color:var(--white);
+  }
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:12px; font-weight:700; letter-spacing:0.09em;
+    color:var(--gold-500); margin-bottom:16px;
+  }
+  .hero-eyebrow::before{content:""; width:26px; height:2px; background:var(--gold-500);}
+  .hero h1{font-size:54px; color:var(--white); margin-bottom:16px; max-width:640px;}
+  .hero p{
+    font-size:16px; color:rgba(255,255,255,0.82); line-height:1.65;
+    max-width:520px; margin:0 0 30px;
+  }
+  .hero-links{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn-gold{
+    background:var(--gold-500); color:var(--navy-900); border:none;
+    padding:13px 24px; border-radius:var(--radius-s);
+    font-size:13.5px; font-weight:700;
+    transition:background .15s ease;
+  }
+  .btn-gold:hover{background:var(--gold-600); color:var(--white);}
+  .btn-ghost-light{
+    background:none; color:var(--white); border:1px solid rgba(255,255,255,0.45);
+    padding:13px 24px; border-radius:var(--radius-s);
+    font-size:13.5px; font-weight:700;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .btn-ghost-light:hover{border-color:var(--white); background:rgba(255,255,255,0.1);}
+  @media (max-width:640px){.hero h1{font-size:36px;} .hero{min-height:440px;}}
+
+  /* quick links strip */
+  .quick-strip{
+    background:var(--navy-800);
+    display:grid; grid-template-columns:repeat(4,1fr);
+    border-top:1px solid rgba(255,255,255,0.1);
+  }
+  @media (max-width:760px){.quick-strip{grid-template-columns:1fr 1fr;}}
+  .quick-item{
+    padding:22px 24px; color:var(--white);
+    border-right:1px solid rgba(255,255,255,0.1);
+    display:flex; align-items:center; gap:13px;
+    transition:background .15s ease;
+  }
+  .quick-item:last-child{border-right:none;}
+  .quick-item:hover{background:var(--navy-700);}
+  .quick-item svg{color:var(--gold-500); flex-shrink:0;}
+  .quick-item .qt{font-size:13.5px; font-weight:700;}
+  .quick-item .qs{font-size:11.5px; color:rgba(255,255,255,0.6); margin-top:2px;}
+
+  /* =========================================================
+     SECTION SHELL
+     ========================================================= */
+  .section{max-width:1280px; margin:0 auto; padding:76px 32px;}
+  .section-narrow{max-width:900px;}
+  .eyebrow{
+    font-size:11.5px; font-weight:700; letter-spacing:0.09em;
+    color:var(--gold-600); margin-bottom:12px;
+  }
+  .section-head{margin-bottom:34px;}
+  .section-head h2{font-size:36px; margin-bottom:10px;}
+  .section-head p{font-size:15px; color:var(--ink-600); line-height:1.65; max-width:620px; margin:0;}
+  .head-row{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap;
+  }
+  .see-all{
+    font-size:13px; font-weight:700; color:var(--blue-600);
+    border-bottom:1px solid var(--line); padding-bottom:2px;
+  }
+  .see-all:hover{border-color:var(--blue-600);}
+
+  /* welcome / about split */
+  .split{
+    display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:center;
+  }
+  @media (max-width:860px){.split{grid-template-columns:1fr; gap:32px;}}
+  .split .ph{aspect-ratio:4/3; border-radius:var(--radius-m);}
+  .split h2{font-size:34px; margin-bottom:16px;}
+  .split p{font-size:14.5px; color:var(--ink-600); line-height:1.75; margin:0 0 14px;}
+  .stat-inline{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:28px;
+    padding-top:24px; border-top:1px solid var(--line);
+  }
+  .stat-inline .n{font-family:'Fraunces',serif; font-size:30px; font-weight:600; color:var(--navy-900);}
+  .stat-inline .l{font-size:11.5px; color:var(--ink-600); margin-top:2px; line-height:1.4;}
+
+  /* =========================================================
+     MISSION / VISION
+     ========================================================= */
+  .mv-band{
+    background:var(--navy-900);
+    position:relative;
+    overflow:hidden;
+  }
+  .mv-band::before{
+    content:""; position:absolute; right:-140px; top:-120px;
+    width:420px; height:420px; border-radius:50%;
+    border:1px solid rgba(255,255,255,0.1);
+  }
+  .mv-band::after{
+    content:""; position:absolute; right:-60px; top:-40px;
+    width:260px; height:260px; border-radius:50%;
+    border:1px solid rgba(216,164,61,0.2);
+  }
+  .mv-inner{
+    max-width:1280px; margin:0 auto; padding:76px 32px;
+    position:relative; z-index:1;
+  }
+  .mv-inner .eyebrow{color:var(--gold-500);}
+  .mv-inner > h2{color:var(--white); font-size:36px; margin-bottom:38px;}
+  .mv-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media (max-width:860px){.mv-grid{grid-template-columns:1fr;}}
+  .mv-card{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.14);
+    border-left:3px solid var(--gold-500);
+    border-radius:var(--radius-m);
+    padding:30px 32px;
+  }
+  .mv-card h3{color:var(--white); font-size:24px; margin-bottom:14px;}
+  .mv-card p{
+    font-size:14.5px; color:rgba(255,255,255,0.78); line-height:1.75; margin:0;
+  }
+  .mv-values{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:38px;
+  }
+  @media (max-width:760px){.mv-values{grid-template-columns:1fr 1fr;}}
+  .value-chip{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:var(--radius-m);
+    padding:20px;
+    text-align:center;
+  }
+  .value-chip .vi{
+    width:40px; height:40px; margin:0 auto 12px;
+    border-radius:50%; background:rgba(216,164,61,0.14);
+    display:flex; align-items:center; justify-content:center; color:var(--gold-500);
+  }
+  .value-chip h4{
+    font-family:'IBM Plex Sans',sans-serif; font-size:13px; font-weight:700;
+    color:var(--white); margin-bottom:4px;
+  }
+  .value-chip p{font-size:11.5px; color:rgba(255,255,255,0.6); margin:0; line-height:1.5;}
+
+  /* =========================================================
+     PROGRAMS
+     ========================================================= */
+  .program-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:860px){.program-grid{grid-template-columns:1fr;}}
+  .program-card{
+    border:1px solid var(--line); border-radius:var(--radius-m);
+    overflow:hidden; background:var(--white);
+    transition:border-color .15s ease, transform .12s ease, box-shadow .15s ease;
+  }
+  .program-card:hover{
+    border-color:var(--blue-500); transform:translateY(-3px);
+    box-shadow:0 10px 26px rgba(15,39,72,0.08);
+  }
+  .program-card .ph{aspect-ratio:16/10;}
+  .program-body{padding:22px 24px 26px;}
+  .grade-badge{
+    display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:0.04em;
+    color:var(--blue-600); background:var(--blue-100);
+    padding:4px 10px; border-radius:20px; margin-bottom:12px;
+  }
+  .program-body h3{font-size:21px; margin-bottom:8px;}
+  .program-body p{font-size:13.5px; color:var(--ink-600); line-height:1.65; margin:0 0 14px;}
+  .program-link{font-size:12.5px; font-weight:700; color:var(--blue-600);}
+  .program-link:hover{color:var(--navy-900);}
+
+  /* =========================================================
+     NEWS
+     ========================================================= */
+  .news-band{background:var(--blue-050); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .news-layout{display:grid; grid-template-columns:1.25fr 1fr; gap:26px;}
+  @media (max-width:900px){.news-layout{grid-template-columns:1fr;}}
+  .news-feature{
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius-m);
+    overflow:hidden; display:flex; flex-direction:column;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .news-feature:hover{border-color:var(--blue-500); box-shadow:0 10px 26px rgba(15,39,72,0.08);}
+  .news-feature .ph{aspect-ratio:16/9;}
+  .news-feature-body{padding:26px 28px 30px;}
+  .news-date{
+    font-size:11.5px; font-weight:700; letter-spacing:0.05em;
+    color:var(--gold-600); margin-bottom:10px;
+  }
+  .news-feature-body h3{font-size:26px; margin-bottom:10px; line-height:1.2;}
+  .news-feature-body p{font-size:14px; color:var(--ink-600); line-height:1.7; margin:0;}
+  .news-side{display:flex; flex-direction:column; gap:14px;}
+  .news-item{
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius-m);
+    padding:16px; display:flex; gap:15px; align-items:flex-start;
+    transition:border-color .15s ease;
+  }
+  .news-item:hover{border-color:var(--blue-500);}
+  .news-item .ph{
+    width:88px; height:70px; flex-shrink:0; border-radius:var(--radius-s);
+  }
+  .news-item .ph::after{display:none;}
+  .news-item h4{font-family:'IBM Plex Sans',sans-serif; font-size:14px; font-weight:700; line-height:1.4; margin-bottom:5px;}
+  .news-item .news-date{margin-bottom:6px;}
+  .news-item p{font-size:12px; color:var(--ink-400); line-height:1.5; margin:0;}
+
+  /* =========================================================
+     ANNOUNCEMENTS / EVENTS
+     ========================================================= */
+  .events-layout{display:grid; grid-template-columns:1fr 340px; gap:44px; align-items:start;}
+  @media (max-width:900px){.events-layout{grid-template-columns:1fr;}}
+  .event-row{
+    display:flex; gap:22px; align-items:flex-start;
+    padding:20px 0; border-bottom:1px solid var(--line);
+  }
+  .event-row:first-of-type{border-top:1px solid var(--line);}
+  .event-date{
+    flex-shrink:0; width:64px; text-align:center;
+    border:1px solid var(--line); border-radius:var(--radius-s);
+    padding:8px 4px; background:var(--blue-050);
+  }
+  .event-date .m{font-size:10.5px; font-weight:700; letter-spacing:0.06em; color:var(--gold-600);}
+  .event-date .d{font-family:'Fraunces',serif; font-size:24px; font-weight:600; line-height:1.1; color:var(--navy-900);}
+  .event-body h4{font-family:'IBM Plex Sans',sans-serif; font-size:15px; font-weight:700; margin-bottom:5px;}
+  .event-meta{font-size:12px; color:var(--ink-400); display:flex; gap:14px; flex-wrap:wrap; margin-bottom:6px;}
+  .event-body p{font-size:13px; color:var(--ink-600); line-height:1.6; margin:0;}
+
+  .announce-box{
+    border:1px solid var(--line); border-radius:var(--radius-m);
+    overflow:hidden;
+  }
+  .announce-head{
+    background:var(--navy-900); color:var(--white);
+    padding:16px 20px; display:flex; align-items:center; gap:10px;
+  }
+  .announce-head h3{font-size:18px; color:var(--white);}
+  .announce-head svg{color:var(--gold-500);}
+  .announce-list{padding:6px 20px 18px;}
+  .announce-item{padding:14px 0; border-bottom:1px solid var(--line-soft);}
+  .announce-item:last-child{border-bottom:none;}
+  .announce-item .tag{
+    display:inline-block; font-size:10px; font-weight:700; letter-spacing:0.04em;
+    padding:3px 8px; border-radius:20px; margin-bottom:7px;
+  }
+  .tag.urgent{background:#FBE6E4; color:#8A2E28;}
+  .tag.info{background:var(--blue-100); color:var(--blue-600);}
+  .tag.event{background:var(--gold-100); color:var(--gold-600);}
+  .announce-item h5{
+    font-family:'IBM Plex Sans',sans-serif; font-size:13.5px; font-weight:700; margin:0 0 4px;
+  }
+  .announce-item p{font-size:12px; color:var(--ink-600); line-height:1.55; margin:0;}
+
+  /* =========================================================
+     ADMISSIONS CTA
+     ========================================================= */
+  .cta-band{
+    background:linear-gradient(115deg, var(--navy-900) 0%, var(--blue-600) 150%);
+    position:relative; overflow:hidden;
+  }
+  .cta-band::after{
+    content:""; position:absolute; left:-80px; bottom:-140px;
+    width:340px; height:340px; border-radius:50%;
+    border:1px solid rgba(216,164,61,0.25);
+  }
+  .cta-inner{
+    max-width:1280px; margin:0 auto; padding:64px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:28px; flex-wrap:wrap;
+    position:relative; z-index:1;
+  }
+  .cta-inner h2{color:var(--white); font-size:34px; margin-bottom:10px;}
+  .cta-inner p{font-size:14.5px; color:rgba(255,255,255,0.78); margin:0; max-width:520px; line-height:1.65;}
+
+  /* =========================================================
+     FOOTER
+     ========================================================= */
+  .site-footer{background:var(--navy-900); color:rgba(255,255,255,0.7); padding:56px 32px 26px;}
+  .footer-grid{
+    max-width:1280px; margin:0 auto;
+    display:grid; grid-template-columns:1.5fr 1fr 1fr 1.2fr; gap:38px;
+    padding-bottom:36px; border-bottom:1px solid rgba(255,255,255,0.12); margin-bottom:22px;
+  }
+  @media (max-width:860px){.footer-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:520px){.footer-grid{grid-template-columns:1fr;}}
+  .footer-brand .crest{background:var(--white); color:var(--navy-900); border-color:var(--gold-500);}
+  .footer-brand .school-title{color:var(--white);}
+  .footer-brand .school-title small{color:rgba(255,255,255,0.5);}
+  .footer-brand p{font-size:12.5px; line-height:1.7; margin:16px 0 0; max-width:280px;}
+  .footer-grid h5{
+    font-family:'IBM Plex Sans',sans-serif; font-size:11.5px; font-weight:700;
+    letter-spacing:0.07em; color:var(--gold-500); margin:0 0 15px;
+  }
+  .footer-grid ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .footer-grid a{font-size:13px; color:rgba(255,255,255,0.7);}
+  .footer-grid a:hover{color:var(--white);}
+  .contact-line{display:flex; gap:10px; align-items:flex-start; font-size:13px; line-height:1.6; margin-bottom:12px;}
+  .contact-line svg{color:var(--gold-500); flex-shrink:0; margin-top:3px;}
+  .footer-bottom{
+    max-width:1280px; margin:0 auto;
+    display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+    font-size:11.5px; color:rgba(255,255,255,0.45);
+  }
+  .social-row{display:flex; gap:10px;}
+  .social-row a{
+    width:32px; height:32px; border:1px solid rgba(255,255,255,0.22); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.7);
+  }
+  .social-row a:hover{border-color:var(--gold-500); color:var(--gold-500);}
+</style>
+</head>
+<body>
+
+<!-- ============ UTILITY BAR ============ -->
+<div class="utility-bar">
+  <div class="utility-links">
+    <a href="#">Parent Portal</a>
+    <a href="#">Student Portal</a>
+    <a href="#">Faculty &amp; Staff</a>
+    <a href="#">Careers</a>
+  </div>
+  <div class="utility-contact">
+    <span>(02) 8123-4567</span>
+    <span>info@calabrianfs.edu.ph</span>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <a href="#" class="crest-mark">
+    <div class="crest">C</div>
+    <div class="school-title">Calabrian Formation School, Inc.
+      <small>FORMING HEARTS, SHAPING MINDS</small>
+    </div>
+  </a>
+  <nav class="main-nav">
+    <a href="#about" class="active">About</a>
+    <a href="#mission">Mission &amp; Vision</a>
+    <a href="#programs">Academics</a>
+    <a href="#news">News</a>
+    <a href="#events">Events</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <button class="header-cta">Enroll Now</button>
+    <button class="nav-toggle" aria-label="Open menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="ph" data-label="REPLACE → Wide campus photo or students at morning assembly (1920×900)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">SCHOOL YEAR 2026&ndash;2027 ENROLLMENT NOW OPEN</div>
+    <h1>Forming hearts, shaping minds since 1998.</h1>
+    <p>A Catholic elementary school in the heart of the community — where every child from Grade 1 to Grade 6 is known by name, guided with care, and formed for a life of service.</p>
+    <div class="hero-links">
+      <button class="btn-gold">Begin Enrollment</button>
+      <button class="btn-ghost-light">Schedule a Campus Visit</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUICK STRIP ============ -->
+<div class="quick-strip">
+  <a class="quick-item" href="#">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3L2 8l10 5 10-5-10-5z"/><path d="M6 10.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
+    <div><div class="qt">Admissions</div><div class="qs">Requirements &amp; process</div></div>
+  </a>
+  <a class="quick-item" href="#">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+    <div><div class="qt">School Calendar</div><div class="qs">Key dates &amp; holidays</div></div>
+  </a>
+  <a class="quick-item" href="#">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    <div><div class="qt">Student Portal</div><div class="qs">Grades &amp; classwork</div></div>
+  </a>
+  <a class="quick-item" href="#">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v12H7l-3 3V4z"/></svg>
+    <div><div class="qt">Contact Us</div><div class="qs">Office hours &amp; location</div></div>
+  </a>
+</div>
+
+<!-- ============ WELCOME / ABOUT ============ -->
+<section class="section" id="about">
+  <div class="split">
+    <div class="ph" data-label="REPLACE → Principal or students in classroom (1200×900)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+    </div>
+    <div>
+      <div class="eyebrow">WELCOME TO CALABRIAN</div>
+      <h2>A school small enough to know your child, serious enough to prepare them.</h2>
+      <p>Calabrian Formation School, Inc. has served families in the community for over two decades, offering complete elementary education from Grade 1 through Grade 6. Our classrooms stay intentionally small so that no child slips through the cracks.</p>
+      <p>Rooted in Christian values and committed to academic excellence, we form learners who are curious, compassionate, and confident — prepared not only for high school, but for life.</p>
+      <div class="stat-inline">
+        <div>
+          <div class="n">1998</div>
+          <div class="l">Year founded</div>
+        </div>
+        <div>
+          <div class="n">1:20</div>
+          <div class="l">Teacher to student ratio</div>
+        </div>
+        <div>
+          <div class="n">6</div>
+          <div class="l">Grade levels offered</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSION / VISION ============ -->
+<section class="mv-band" id="mission">
+  <div class="mv-inner">
+    <div class="eyebrow">WHO WE ARE</div>
+    <h2>Our Mission &amp; Vision</h2>
+
+    <div class="mv-grid">
+      <div class="mv-card">
+        <h3>Our Mission</h3>
+        <p>To provide quality Catholic elementary education that nurtures the intellectual, spiritual, emotional, and social growth of every learner — forming children who think critically, act justly, and serve generously within their families and communities.</p>
+      </div>
+      <div class="mv-card">
+        <h3>Our Vision</h3>
+        <p>A learning community where every Calabrian child is known, valued, and formed into a Christ-centered individual — equipped with the knowledge, character, and compassion to become a force for good in the world.</p>
+      </div>
+    </div>
+
+    <div class="mv-values">
+      <div class="value-chip">
+        <div class="vi">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.4-7-9.5A3.5 3.5 0 0 1 12 8a3.5 3.5 0 0 1 7 3.5C19 16.6 12 21 12 21z"/></svg>
+        </div>
+        <h4>Faith</h4>
+        <p>Christ-centered formation in daily life</p>
+      </div>
+      <div class="value-chip">
+        <div class="vi">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3L2 8l10 5 10-5-10-5z"/><path d="M6 10.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
+        </div>
+        <h4>Excellence</h4>
+        <p>High standards, personal growth</p>
+      </div>
+      <div class="value-chip">
+        <div class="vi">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M2 20c0-3.5 3.1-6 7-6s7 2.5 7 6"/><path d="M17 11a3 3 0 1 0 0-6"/><path d="M22 20c0-2.6-1.8-4.7-4.5-5.4"/></svg>
+        </div>
+        <h4>Community</h4>
+        <p>Families and school as partners</p>
+      </div>
+      <div class="value-chip">
+        <div class="vi">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.4 6.9H21l-5.4 4 2 6.9-5.6-4.2L6.4 20l2-7-5.4-4h6.6L12 2z"/></svg>
+        </div>
+        <h4>Service</h4>
+        <p>Compassion put into action</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROGRAMS ============ -->
+<section class="section" id="programs">
+  <div class="section-head head-row">
+    <div>
+      <div class="eyebrow">ACADEMICS</div>
+      <h2>Our Programs</h2>
+      <p>A complete elementary curriculum aligned with DepEd standards, taught by teachers who know each child by name.</p>
+    </div>
+    <a class="see-all" href="#">View full curriculum →</a>
+  </div>
+
+  <div class="program-grid">
+    <div class="program-card">
+      <div class="ph" data-label="REPLACE → Primary classroom photo (800×500)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      </div>
+      <div class="program-body">
+        <span class="grade-badge">GRADES 1&ndash;2</span>
+        <h3>Primary Level</h3>
+        <p>Foundational literacy and numeracy taught through play-based, hands-on learning that builds confidence from the very first day of school.</p>
+        <a class="program-link" href="#">Learn more →</a>
+      </div>
+    </div>
+
+    <div class="program-card">
+      <div class="ph" data-label="REPLACE → Students in group activity (800×500)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      </div>
+      <div class="program-body">
+        <span class="grade-badge">GRADES 3&ndash;4</span>
+        <h3>Intermediate Level</h3>
+        <p>Deeper study across Math, Science, English, Filipino, and Araling Panlipunan, with growing emphasis on independent thinking and collaboration.</p>
+        <a class="program-link" href="#">Learn more →</a>
+      </div>
+    </div>
+
+    <div class="program-card">
+      <div class="ph" data-label="REPLACE → Grade 6 students or laboratory (800×500)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      </div>
+      <div class="program-body">
+        <span class="grade-badge">GRADES 5&ndash;6</span>
+        <h3>Upper Elementary</h3>
+        <p>Full subject specialization including Science, Computer, TLE, MAPEH, and Christian Living — preparing graduates for a strong transition to high school.</p>
+        <a class="program-link" href="#">Learn more →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEWS ============ -->
+<section class="news-band" id="news">
+  <div class="section">
+    <div class="section-head head-row">
+      <div>
+        <div class="eyebrow">WHAT'S HAPPENING</div>
+        <h2>School News &amp; Updates</h2>
+      </div>
+      <a class="see-all" href="#">View all news →</a>
+    </div>
+
+    <div class="news-layout">
+      <a class="news-feature" href="#">
+        <div class="ph" data-label="REPLACE → Featured news photo (1200×675)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="news-feature-body">
+          <div class="news-date">12 SEPTEMBER 2026</div>
+          <h3>Online enrollment now open for School Year 2026&ndash;2027</h3>
+          <p>Parents may now submit enrollment applications, upload requirements, and settle fees through GCash without visiting the registrar's office. The new portal cuts what used to be a half-day process down to a few minutes at home.</p>
+        </div>
+      </a>
+
+      <div class="news-side">
+        <a class="news-item" href="#">
+          <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+          <div>
+            <div class="news-date">08 SEP 2026</div>
+            <h4>Grade 6 pupils sweep district Science quiz bee</h4>
+            <p>Three Calabrian teams placed in the top five of the annual district competition.</p>
+          </div>
+        </a>
+        <a class="news-item" href="#">
+          <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+          <div>
+            <div class="news-date">03 SEP 2026</div>
+            <h4>New computer laboratory opens for Grades 4&ndash;6</h4>
+            <p>Twenty new units were installed over the semestral break.</p>
+          </div>
+        </a>
+        <a class="news-item" href="#">
+          <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+          <div>
+            <div class="news-date">28 AUG 2026</div>
+            <h4>Buwan ng Wika celebration closes with cultural showcase</h4>
+            <p>Each grade level presented a regional dance and literary piece.</p>
+          </div>
+        </a>
+        <a class="news-item" href="#">
+          <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+          <div>
+            <div class="news-date">20 AUG 2026</div>
+            <h4>Faculty complete child protection policy training</h4>
+            <p>All teaching staff attended the two-day seminar led by the DepEd division office.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EVENTS + ANNOUNCEMENTS ============ -->
+<section class="section" id="events">
+  <div class="events-layout">
+    <div>
+      <div class="section-head">
+        <div class="eyebrow">MARK YOUR CALENDAR</div>
+        <h2>Upcoming Events</h2>
+      </div>
+
+      <div class="event-row">
+        <div class="event-date"><div class="m">SEP</div><div class="d">22</div></div>
+        <div class="event-body">
+          <h4>First Quarter Parent-Teacher Conference</h4>
+          <div class="event-meta"><span>8:00 AM &ndash; 12:00 NN</span><span>Respective classrooms</span></div>
+          <p>Card distribution and one-on-one consultation with advisers. Parents of all grade levels are expected to attend.</p>
+        </div>
+      </div>
+
+      <div class="event-row">
+        <div class="event-date"><div class="m">OCT</div><div class="d">04</div></div>
+        <div class="event-body">
+          <h4>Feast Day Mass and Family Day</h4>
+          <div class="event-meta"><span>7:00 AM onwards</span><span>School grounds</span></div>
+          <p>A whole-school celebration beginning with Mass, followed by games and a shared meal with families.</p>
+        </div>
+      </div>
+
+      <div class="event-row">
+        <div class="event-date"><div class="m">OCT</div><div class="d">17</div></div>
+        <div class="event-body">
+          <h4>Intramurals Week Opening Ceremony</h4>
+          <div class="event-meta"><span>8:00 AM</span><span>Covered court</span></div>
+          <p>Parade of colors and opening games for the week-long sports festival across all grade levels.</p>
+        </div>
+      </div>
+
+      <div class="event-row">
+        <div class="event-date"><div class="m">NOV</div><div class="d">08</div></div>
+        <div class="event-body">
+          <h4>Kindergarten &amp; Transferee Screening Day</h4>
+          <div class="event-meta"><span>By appointment</span><span>Registrar's office</span></div>
+          <p>Scheduled assessment for incoming Kindergarten applicants and transferees. Book a slot through the enrollment portal.</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="announce-box">
+      <div class="announce-head">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11v2a1 1 0 0 0 1 1h3l4 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>
+        <h3>Announcements</h3>
+      </div>
+      <div class="announce-list">
+        <div class="announce-item">
+          <span class="tag urgent">CLASS SUSPENSION</span>
+          <h5>No classes on 25 September</h5>
+          <p>Classes are suspended school-wide due to the scheduled barangay-level activity. Regular classes resume the following day.</p>
+        </div>
+        <div class="announce-item">
+          <span class="tag info">ENROLLMENT</span>
+          <h5>Enrollment deadline: 30 September</h5>
+          <p>Late applications will be accepted only for transferees with completed screening requirements.</p>
+        </div>
+        <div class="announce-item">
+          <span class="tag event">REMINDER</span>
+          <h5>Complete uniform required starting October</h5>
+          <p>The grace period for the PE uniform and school shoes ends on 30 September.</p>
+        </div>
+        <div class="announce-item">
+          <span class="tag info">PAYMENT</span>
+          <h5>GCash is the official payment channel</h5>
+          <p>All tuition and enrollment fees are settled through the school's verified GCash account only.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ ADMISSIONS CTA ============ -->
+<section class="cta-band">
+  <div class="cta-inner">
+    <div>
+      <h2>Ready to join the Calabrian family?</h2>
+      <p>Enrollment for School Year 2026&ndash;2027 is open for Grades 1 to 6. Kindergarten applicants and transferees may request a screening schedule online.</p>
+    </div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="btn-gold">Start Enrollment</button>
+      <button class="btn-ghost-light">View Requirements</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer" id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="crest-mark">
+        <div class="crest">C</div>
+        <div class="school-title">Calabrian Formation School, Inc.
+          <small>FORMING HEARTS, SHAPING MINDS</small>
+        </div>
+      </div>
+      <p>A Catholic elementary school serving Grades 1 to 6, committed to academic excellence and Christ-centered formation since 1998.</p>
+    </div>
+
+    <div>
+      <h5>QUICK LINKS</h5>
+      <ul>
+        <li><a href="#about">About the School</a></li>
+        <li><a href="#mission">Mission &amp; Vision</a></li>
+        <li><a href="#programs">Academic Programs</a></li>
+        <li><a href="#news">News &amp; Updates</a></li>
+        <li><a href="#events">Events Calendar</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h5>FOR FAMILIES</h5>
+      <ul>
+        <li><a href="#">Enroll Online</a></li>
+        <li><a href="#">Admission Requirements</a></li>
+        <li><a href="#">Tuition &amp; Fees</a></li>
+        <li><a href="#">Parent Portal</a></li>
+        <li><a href="#">Student Portal</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h5>GET IN TOUCH</h5>
+      <div class="contact-line">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>123 Sampaguita Street, Barangay San Isidro, Metro Manila, Philippines</span>
+      </div>
+      <div class="contact-line">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+        <span>(02) 8123-4567</span>
+      </div>
+      <div class="contact-line">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg>
+        <span>info@calabrianfs.edu.ph</span>
+      </div>
+      <div class="contact-line">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span>Mon&ndash;Fri, 7:00 AM &ndash; 4:00 PM</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Calabrian Formation School, Inc. All rights reserved.</span>
+    <div class="social-row">
+      <a href="#" aria-label="Facebook">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="#" aria-label="Email">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg>
+      </a>
+      <a href="#" aria-label="YouTube">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3V9z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

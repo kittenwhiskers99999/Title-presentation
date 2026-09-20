@@ -1,1 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calabrian Formation School, Inc. — Enrollment System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
+<!-- =========================================================
+     LANDING VIEW
+     ========================================================= -->
+<div data-view="landing" class="active">
+  <header class="site-header">
+    <div class="crest-mark">
+      <div class="crest">C</div>
+      <div class="school-name">Calabrian Formation School, Inc.
+        <small>ENROLLMENT PORTAL · SY 2026&ndash;2027</small>
+      </div>
+    </div>
+    <div class="header-links">
+      <a href="#">Requirements</a>
+      <a href="#">Tuition</a>
+      <a href="#">Contact</a>
+      <button class="staff-link" onclick="showView('staffLogin')">Registrar sign-in</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">ENROLLMENT NOW OPEN</div>
+      <h1>Enroll online — no more standing in line at the registrar's office.</h1>
+      <p>Submit your child's records, requirements, and GCash payment from home. Track your application status without a follow-up call.</p>
+      <button class="btn-gold" onclick="scrollToTypes()">Begin enrollment</button>
+    </div>
+  </section>
+
+  <div class="landing-body">
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="num">Gr.1&ndash;6</div>
+        <h4>Grade levels offered</h4>
+        <p>Elementary enrollment is open for Grade 1 through Grade 6 for School Year 2026&ndash;2027.</p>
+      </div>
+      <div class="info-card">
+        <div class="num">GCash</div>
+        <h4>Payment method</h4>
+        <p>Enrollment fees are collected through GCash only. You'll receive a reference number and digital receipt.</p>
+      </div>
+      <div class="info-card">
+        <div class="num">1&ndash;2 days</div>
+        <h4>Review time</h4>
+        <p>The registrar's office reviews and confirms most applications within one to two working days.</p>
+      </div>
+    </div>
+
+    <div class="screening-flag">
+      <div class="flag-icon">!</div>
+      <div>
+        <h4>Kindergarten applicants and transferees need screening first</h4>
+        <p>These two groups can't enroll directly online. Instead, you'll fill out a short screening request below, and the school will contact you to schedule an assessment before enrollment and payment proceed.</p>
+      </div>
+    </div>
+
+    <div id="type-select-anchor">
+      <p class="type-select-label">What are you enrolling for?</p>
+      <div class="type-grid">
+        <button class="type-card" onclick="startEnrollment('new')">
+          <span class="type-tag-pill open">Opens enrollment</span>
+          <h4 style="margin-top:10px;">New Student — Grade 1</h4>
+          <p>First-time entrant to Calabrian, coming from a Kindergarten graduate of another school.</p>
+        </button>
+        <button class="type-card" onclick="startEnrollment('continuing')">
+          <span class="type-tag-pill open">Opens enrollment</span>
+          <h4 style="margin-top:10px;">Continuing Student — Gr. 2&ndash;6</h4>
+          <p>Currently enrolled at Calabrian and moving up to the next grade level.</p>
+        </button>
+        <button class="type-card" onclick="startScreening('kinder')">
+          <span class="type-tag-pill screen">Requires screening</span>
+          <h4 style="margin-top:10px;">Kindergarten Applicant</h4>
+          <p>Not yet offered for direct online enrollment. Request a screening schedule instead.</p>
+        </button>
+        <button class="type-card" onclick="startScreening('transferee')">
+          <span class="type-tag-pill screen">Requires screening</span>
+          <h4 style="margin-top:10px;">Transferee — Any Grade</h4>
+          <p>Currently enrolled at another school. An assessment is required before enrollment.</p>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     ENROLLMENT WIZARD (new / continuing)
+     ========================================================= -->
+<div data-view="wizard">
+  <header class="site-header">
+    <div class="crest-mark">
+      <div class="crest">C</div>
+      <div class="school-name">Calabrian Formation School, Inc.<small>ENROLLMENT APPLICATION</small></div>
+    </div>
+    <button class="btn-ghost" style="color:rgba(255,255,255,0.75);" onclick="showView('landing')">Save &amp; exit</button>
+  </header>
+
+  <div class="wizard-shell">
+    <div class="step-tracker" id="step-tracker"></div>
+
+    <div class="form-card">
+      <!-- STEP 1 -->
+      <div class="wizard-step" data-step="1">
+        <h2>Student information</h2>
+        <p class="form-sub" id="step1-sub">Applying as: New Student, Grade 1</p>
+
+        <div class="fieldset-label">Learner details</div>
+        <div class="row-2">
+          <div class="field"><label>Last name</label><input type="text" placeholder="Dela Cruz"></div>
+          <div class="field"><label>First name</label><input type="text" placeholder="Miguel"></div>
+        </div>
+        <div class="row-3">
+          <div class="field"><label>Date of birth</label><input type="date"></div>
+          <div class="field"><label>Sex</label>
+            <select><option>Male</option><option>Female</option></select>
+          </div>
+          <div class="field"><label>Grade level</label>
+            <select id="grade-select"><option>Grade 1</option></select>
+          </div>
+        </div>
+        <div class="field"><label>Home address</label><input type="text" placeholder="123 Rizal St., Brgy. San Isidro"></div>
+        <div class="field" id="lrn-field" style="display:none;">
+          <label>LRN (Learner Reference Number)</label>
+          <input type="text" placeholder="1234 5678 9012">
+          <div class="field-hint">Only applicable for continuing or transferee students already assigned an LRN.</div>
+        </div>
+
+        <div class="wizard-actions">
+          <span></span>
+          <button class="btn-primary" onclick="nextStep()">Continue to guardian info</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="wizard-step" data-step="2" style="display:none;">
+        <h2>Parent / guardian information</h2>
+        <p class="form-sub">This person will be the primary contact for enrollment and billing.</p>
+
+        <div class="fieldset-label">Primary guardian</div>
+        <div class="row-2">
+          <div class="field"><label>Full name</label><input type="text" placeholder="Elena Dela Cruz"></div>
+          <div class="field"><label>Relationship to student</label>
+            <select><option>Mother</option><option>Father</option><option>Legal guardian</option></select>
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label>Mobile number</label><input type="tel" placeholder="09XX XXX XXXX"></div>
+          <div class="field"><label>Email address</label><input type="email" placeholder="elena.delacruz@email.com"></div>
+        </div>
+
+        <div class="fieldset-label">Emergency contact</div>
+        <div class="row-2">
+          <div class="field"><label>Full name</label><input type="text" placeholder="Roberto Dela Cruz"></div>
+          <div class="field"><label>Mobile number</label><input type="tel" placeholder="09XX XXX XXXX"></div>
+        </div>
+
+        <div class="wizard-actions">
+          <button class="btn-ghost" onclick="prevStep()">Back</button>
+          <button class="btn-primary" onclick="nextStep()">Continue to requirements</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="wizard-step" data-step="3" style="display:none;">
+        <h2>Requirements</h2>
+        <p class="form-sub">Upload clear photos or scans. Accepted formats: JPG, PNG, PDF.</p>
+
+        <div class="upload-row">
+          <div><span class="req-name">PSA birth certificate</span><span class="req-note">Original or certified true copy</span></div>
+          <button class="upload-btn" onclick="toggleUpload(this)">Upload</button>
+        </div>
+        <div class="upload-row">
+          <div><span class="req-name">Report card / Form 138</span><span class="req-note">From previous school year</span></div>
+          <button class="upload-btn" onclick="toggleUpload(this)">Upload</button>
+        </div>
+        <div class="upload-row">
+          <div><span class="req-name">Good moral certificate</span><span class="req-note">From previous school, if applicable</span></div>
+          <button class="upload-btn" onclick="toggleUpload(this)">Upload</button>
+        </div>
+        <div class="upload-row">
+          <div><span class="req-name">2x2 ID photo</span><span class="req-note">White background, taken within the last 6 months</span></div>
+          <button class="upload-btn" onclick="toggleUpload(this)">Upload</button>
+        </div>
+
+        <div class="wizard-actions">
+          <button class="btn-ghost" onclick="prevStep()">Back</button>
+          <button class="btn-primary" onclick="nextStep()">Continue to payment</button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="wizard-step" data-step="4" style="display:none;">
+        <h2>Enrollment payment</h2>
+        <p class="form-sub">Calabrian Formation School accepts enrollment payments through GCash only.</p>
+
+        <div class="gcash-panel">
+          <div class="qr-box">
+            <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+              <rect width="90" height="90" rx="6" fill="#F3F2EC"/>
+              <g fill="#1C3B2E">
+                <rect x="8" y="8" width="20" height="20"/><rect x="12" y="12" width="12" height="12" fill="#F3F2EC"/><rect x="16" y="16" width="4" height="4" fill="#1C3B2E"/>
+                <rect x="62" y="8" width="20" height="20"/><rect x="66" y="12" width="12" height="12" fill="#F3F2EC"/><rect x="70" y="16" width="4" height="4" fill="#1C3B2E"/>
+                <rect x="8" y="62" width="20" height="20"/><rect x="12" y="66" width="12" height="12" fill="#F3F2EC"/><rect x="16" y="70" width="4" height="4" fill="#1C3B2E"/>
+                <rect x="38" y="8" width="4" height="4"/><rect x="46" y="8" width="4" height="4"/><rect x="38" y="16" width="4" height="4"/>
+                <rect x="38" y="38" width="14" height="14"/><rect x="60" y="38" width="4" height="4"/><rect x="68" y="38" width="4" height="4"/>
+                <rect x="38" y="60" width="4" height="4"/><rect x="46" y="60" width="4" height="4"/><rect x="60" y="60" width="14" height="14"/>
+                <rect x="38" y="68" width="4" height="4"/><rect x="60" y="76" width="4" height="4"/><rect x="76" y="60" width="4" height="4"/>
+              </g>
+            </svg>
+          </div>
+          <div class="gcash-detail">
+            <div class="gcash-label">SCAN TO PAY OR SEND TO</div>
+            <div class="gcash-value">0917 234 5678</div>
+            <div class="fee-line"><span>Enrollment fee</span><span>₱ 3,000.00</span></div>
+            <div class="fee-line"><span>Books &amp; modules</span><span>₱ 1,800.00</span></div>
+            <div class="fee-line"><span>Miscellaneous fee</span><span>₱ 650.00</span></div>
+            <div class="fee-line total"><span>Total due</span><span>₱ 5,450.00</span></div>
+          </div>
+        </div>
+
+        <div class="field"><label>GCash reference number</label><input type="text" placeholder="e.g. 0123456789012"></div>
+        <div class="upload-row">
+          <div><span class="req-name">Proof of payment</span><span class="req-note">Screenshot of your GCash payment confirmation</span></div>
+          <button class="upload-btn" onclick="toggleUpload(this)">Upload</button>
+        </div>
+        <div class="gcash-only-note">
+          Payments outside GCash (cash, bank deposit, checks) currently can't be processed through this portal — please coordinate with the registrar's office directly for other arrangements.
+        </div>
+
+        <div class="wizard-actions">
+          <button class="btn-ghost" onclick="prevStep()">Back</button>
+          <button class="btn-primary" onclick="nextStep()">Continue to review</button>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="wizard-step" data-step="5" style="display:none;">
+        <h2>Review your application</h2>
+        <p class="form-sub">Please check everything before submitting. You can still edit any section.</p>
+
+        <div class="review-block">
+          <h5>STUDENT</h5>
+          <dl class="review-grid">
+            <div><dt>Name</dt><dd>Miguel Dela Cruz</dd></div>
+            <div><dt>Grade level</dt><dd id="review-grade">Grade 1</dd></div>
+            <div><dt>Date of birth</dt><dd>June 14, 2020</dd></div>
+            <div><dt>Address</dt><dd>Brgy. San Isidro</dd></div>
+          </dl>
+          <button class="review-edit" onclick="goToStep(1)">Edit</button>
+        </div>
+
+        <div class="review-block">
+          <h5>GUARDIAN</h5>
+          <dl class="review-grid">
+            <div><dt>Name</dt><dd>Elena Dela Cruz</dd></div>
+            <div><dt>Mobile</dt><dd>0917 111 2233</dd></div>
+          </dl>
+          <button class="review-edit" onclick="goToStep(2)">Edit</button>
+        </div>
+
+        <div class="review-block">
+          <h5>PAYMENT</h5>
+          <dl class="review-grid">
+            <div><dt>Method</dt><dd>GCash</dd></div>
+            <div><dt>Total due</dt><dd>₱5,450.00</dd></div>
+          </dl>
+          <button class="review-edit" onclick="goToStep(4)">Edit</button>
+        </div>
+
+        <div class="wizard-actions">
+          <button class="btn-ghost" onclick="prevStep()">Back</button>
+          <button class="btn-primary" onclick="submitApplication()">Submit application</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     SCREENING REQUEST (kindergarten / transferee)
+     ========================================================= -->
+<div data-view="screening">
+  <header class="site-header">
+    <div class="crest-mark">
+      <div class="crest">C</div>
+      <div class="school-name">Calabrian Formation School, Inc.<small>SCREENING REQUEST</small></div>
+    </div>
+    <button class="btn-ghost" style="color:rgba(255,255,255,0.75);" onclick="showView('landing')">Cancel</button>
+  </header>
+
+  <div class="wizard-shell" style="grid-template-columns:1fr; max-width:600px;">
+    <div class="form-card">
+      <h2 id="screen-title">Request a screening — Kindergarten</h2>
+      <p class="form-sub" id="screen-sub">Kindergarten applicants are assessed before enrollment opens. Fill this out and the registrar's office will text you a schedule.</p>
+
+      <div class="fieldset-label">Child's details</div>
+      <div class="row-2">
+        <div class="field"><label>Full name</label><input type="text" placeholder="Sofia Ramirez"></div>
+        <div class="field"><label>Date of birth</label><input type="date"></div>
+      </div>
+      <div class="field" id="screen-prev-school" style="display:none;">
+        <label>Current / previous school</label><input type="text" placeholder="St. Anne Learning Center">
+      </div>
+      <div class="field" id="screen-target-grade" style="display:none;">
+        <label>Grade level applying for</label>
+        <select><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option></select>
+      </div>
+
+      <div class="fieldset-label">Guardian contact</div>
+      <div class="row-2">
+        <div class="field"><label>Guardian name</label><input type="text" placeholder="Maria Ramirez"></div>
+        <div class="field"><label>Mobile number</label><input type="tel" placeholder="09XX XXX XXXX"></div>
+      </div>
+      <div class="field"><label>Preferred schedule</label>
+        <select><option>Weekday morning</option><option>Weekday afternoon</option><option>Saturday</option></select>
+      </div>
+
+      <div class="wizard-actions">
+        <button class="btn-ghost" onclick="showView('landing')">Back</button>
+        <button class="btn-primary" onclick="submitScreening()">Request screening</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     CONFIRMATION VIEW
+     ========================================================= -->
+<div data-view="confirm">
+  <header class="site-header">
+    <div class="crest-mark">
+      <div class="crest">C</div>
+      <div class="school-name">Calabrian Formation School, Inc.<small>ENROLLMENT PORTAL</small></div>
+    </div>
+  </header>
+  <div class="confirm-shell">
+    <div class="stamp">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <h1 id="confirm-heading">Application received</h1>
+    <p id="confirm-copy">Your enrollment application has been submitted. The registrar's office will verify your payment and documents within 1&ndash;2 working days.</p>
+
+    <div class="receipt-card">
+      <div class="receipt-row"><span>Application no.</span><span>CFS-2026-04821</span></div>
+      <div class="receipt-row"><span>Student</span><span id="confirm-student">Miguel Dela Cruz</span></div>
+      <div class="receipt-row"><span>Grade level</span><span id="confirm-grade">Grade 1</span></div>
+      <div class="receipt-row"><span>Amount paid (GCash)</span><span id="confirm-amount">₱5,450.00</span></div>
+      <div class="receipt-row"><span>Status</span><span class="status-pill" id="confirm-status">Pending Verification</span></div>
+    </div>
+
+    <div class="confirm-actions">
+      <button class="btn-outline" onclick="showView('landing')">Return home</button>
+      <button class="btn-gold" style="color:var(--green-900);" onclick="showView('staffLogin')">View as registrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     STAFF LOGIN (simple gate)
+     ========================================================= -->
+<div data-view="staffLogin">
+  <div class="hero" style="padding:60px 24px;">
+    <div class="hero-inner" style="max-width:360px;">
+      <div class="hero-eyebrow">REGISTRAR ACCESS</div>
+      <h1 style="font-size:26px;">Staff sign-in</h1>
+      <div style="text-align:left; margin-top:24px;">
+        <div class="field"><label style="color:rgba(255,255,255,0.7);">Staff email</label><input type="email" value="registrar@calabrianfs.edu.ph"></div>
+        <div class="field"><label style="color:rgba(255,255,255,0.7);">Password</label><input type="password" value="••••••••"></div>
+        <button class="btn-gold" style="width:100%; margin-top:6px;" onclick="showView('staff')">Sign in</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     STAFF / REGISTRAR DASHBOARD
+     ========================================================= -->
+<div data-view="staff">
+  <div class="staff-shell">
+    <header class="staff-topbar">
+      <h2>Enrollment records — SY 2026&ndash;2027</h2>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <span class="staff-user">Registrar · Aida Bautista</span>
+        <button class="staff-link" style="color:var(--ink-600); border-color:var(--line);" onclick="showView('landing')">Sign out</button>
+      </div>
+    </header>
+
+    <div class="staff-body">
+      <div class="staff-stats">
+        <div class="staff-stat">
+          <div class="n">248</div>
+          <div class="l">Total applications this year</div>
+        </div>
+        <div class="staff-stat gold">
+          <div class="n">31</div>
+          <div class="l">Awaiting payment verification</div>
+        </div>
+        <div class="staff-stat green">
+          <div class="n">204</div>
+          <div class="l">Approved &amp; confirmed</div>
+        </div>
+        <div class="staff-stat flag">
+          <div class="n">13</div>
+          <div class="l">Flagged for screening</div>
+        </div>
+      </div>
+
+      <div class="table-toolbar">
+        <div class="search-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          Search by student name or application no.
+        </div>
+        <div class="filter-pills">
+          <button class="filter-pill active">All</button>
+          <button class="filter-pill">Unpaid</button>
+          <button class="filter-pill">Pending review</button>
+          <button class="filter-pill">Screening</button>
+        </div>
+      </div>
+
+      <table class="record-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Grade</th>
+            <th>Type</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Submitted</th>
+          </tr>
+        </thead>
+        <tbody id="record-rows"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- record detail drawer -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer(event)">
+  <div class="drawer" onclick="event.stopPropagation()">
+    <button class="drawer-close" onclick="closeDrawer()">✕ Close</button>
+    <h3 id="drawer-name">Miguel Dela Cruz</h3>
+    <div class="drawer-lrn" id="drawer-lrn">App. No. CFS-2026-04821</div>
+
+    <div class="drawer-section">
+      <h5>APPLICATION SUMMARY</h5>
+      <dl class="drawer-grid">
+        <div><dt>Grade level</dt><dd id="drawer-grade">Grade 1</dd></div>
+        <div><dt>Type</dt><dd id="drawer-type">New student</dd></div>
+        <div><dt>Guardian</dt><dd id="drawer-guardian">Elena Dela Cruz</dd></div>
+        <div><dt>Contact</dt><dd id="drawer-contact">0917 111 2233</dd></div>
+      </dl>
+    </div>
+
+    <div class="drawer-section">
+      <h5>PAYMENT</h5>
+      <div class="doc-row">
+        <span>GCash · Ref# 011223344556</span>
+        <span class="doc-status" id="drawer-payment-status">Verified</span>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <h5>DOCUMENTS</h5>
+      <div class="doc-row"><span>PSA birth certificate</span><span class="doc-status">Uploaded</span></div>
+      <div class="doc-row"><span>Report card / Form 138</span><span class="doc-status">Uploaded</span></div>
+      <div class="doc-row"><span>2x2 ID photo</span><span class="doc-status">Uploaded</span></div>
+    </div>
+
+    <div class="drawer-actions">
+      <button class="btn-approve">Approve enrollment</button>
+      <button class="btn-flag">Flag for follow-up</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

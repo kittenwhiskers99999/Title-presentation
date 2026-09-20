@@ -1,1 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calabrian Formation School, Inc. — Enrollment System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-900:#12294D;
+    --green-800:#16345E;
+    --green-600:#2C5AA0;
+    --green-100:#E8EFF9;
+    --cream-050:#F4F7FC;
+    --white:#FFFFFF;
+    --gold-600:#D9A441;
+    --gold-700:#BE8A28;
+    --gold-100:#F7EAC9;
+    --maroon-600:#7C2F33;
+    --maroon-100:#F5E3E1;
+    --ink-900:#182333;
+    --ink-600:#4C596B;
+    --ink-400:#8592A3;
+    --line:#DDE4EE;
+    --line-soft:#EAEFF6;
+    --radius-s:4px;
+    --radius-m:8px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--cream-050);
+    color:var(--ink-900);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    margin:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  [data-view]{display:none;}
+  [data-view].active{display:block;}
+  @media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important;}}
 
+  /* ---------- shared chrome ---------- */
+  .site-header{
+    background:var(--green-900);
+    color:var(--white);
+    padding:16px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .crest-mark{
+    display:flex;align-items:center;gap:12px;
+  }
+  .crest{
+    width:38px;height:38px;
+    border-radius:50%;
+    background:var(--gold-600);
+    color:var(--green-900);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;
+    font-weight:700;font-size:18px;
+    border:2px solid var(--gold-100);
+  }
+  .school-name{
+    font-family:'Cormorant Garamond',serif;
+    font-size:18px;
+    font-weight:600;
+    line-height:1.2;
+  }
+  .school-name small{
+    display:block;
+    font-family:'Inter',sans-serif;
+    font-size:10.5px;
+    font-weight:500;
+    letter-spacing:0.04em;
+    color:rgba(255,255,255,0.6);
+  }
+  .header-links{
+    display:flex; gap:24px; font-size:13.5px; color:rgba(255,255,255,0.75);
+  }
+  .header-links a:hover{color:var(--white);}
+  .staff-link{
+    font-size:12.5px;
+    border:1px solid rgba(255,255,255,0.28);
+    padding:6px 12px;
+    border-radius:20px;
+    color:rgba(255,255,255,0.85);
+  }
+  .staff-link:hover{border-color:var(--gold-600); color:var(--gold-100);}
+
+  /* =========================================================
+     LANDING VIEW
+     ========================================================= */
+  .hero{
+    background:
+      linear-gradient(180deg, var(--green-900) 0%, var(--green-800) 100%);
+    color:var(--white);
+    padding:64px 32px 80px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: repeating-linear-gradient(180deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 34px);
+    pointer-events:none;
+  }
+  .hero-inner{position:relative; z-index:1; max-width:640px; margin:0 auto;}
+  .hero-eyebrow{
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    color:var(--gold-100);
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:40px;
+    color:var(--white);
+    line-height:1.2;
+    margin-bottom:16px;
+  }
+  .hero p{
+    font-size:15px;
+    color:rgba(255,255,255,0.78);
+    line-height:1.6;
+    margin-bottom:30px;
+  }
+  .btn-gold{
+    display:inline-block;
+    background:var(--gold-600);
+    color:var(--green-900);
+    font-weight:700;
+    font-size:14.5px;
+    padding:13px 26px;
+    border-radius:var(--radius-s);
+    border:none;
+    transition:background .15s ease;
+  }
+  .btn-gold:hover{background:var(--gold-700); color:var(--white);}
+
+  .landing-body{
+    max-width:1000px;
+    margin:-42px auto 0;
+    padding:0 32px 80px;
+    position:relative;
+    z-index:2;
+  }
+  .info-cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-bottom:44px;
+  }
+  @media (max-width:760px){.info-cards{grid-template-columns:1fr;}}
+  .info-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    padding:20px 22px;
+    box-shadow:0 6px 24px rgba(28,59,46,0.08);
+  }
+  .info-card .num{
+    font-family:'Cormorant Garamond',serif;
+    font-size:28px;
+    color:var(--gold-700);
+    margin-bottom:6px;
+  }
+  .info-card h4{font-size:14.5px; margin-bottom:6px; font-family:'Inter',sans-serif; font-weight:600;}
+  .info-card p{font-size:12.5px; color:var(--ink-600); line-height:1.55; margin:0;}
+
+  .screening-flag{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    background:var(--maroon-100);
+    border:1px solid #E4C4C2;
+    border-radius:var(--radius-m);
+    padding:18px 20px;
+    margin-bottom:44px;
+  }
+  .screening-flag .flag-icon{
+    width:30px;height:30px;flex-shrink:0;
+    border-radius:50%;
+    background:var(--maroon-600);
+    color:var(--white);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700; font-size:14px;
+    font-family:'Cormorant Garamond',serif;
+  }
+  .screening-flag h4{
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    color:var(--maroon-600);
+    margin-bottom:4px;
+  }
+  .screening-flag p{
+    font-size:12.5px;
+    color:#6B3634;
+    line-height:1.6;
+    margin:0;
+  }
+
+  .type-select-label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-600);
+    margin-bottom:16px;
+  }
+  .type-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+  }
+  @media (max-width:760px){.type-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:460px){.type-grid{grid-template-columns:1fr;}}
+  .type-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    padding:20px 18px;
+    text-align:left;
+    transition:border-color .15s ease, transform .12s ease;
+  }
+  .type-card:hover{border-color:var(--green-600); transform:translateY(-2px);}
+  .type-card:focus-visible{outline:2px solid var(--gold-600); outline-offset:2px;}
+  .type-card h4{font-family:'Inter',sans-serif; font-size:14px; margin-bottom:5px;}
+  .type-card p{font-size:11.5px; color:var(--ink-600); line-height:1.5; margin-bottom:12px;}
+  .type-tag-pill{
+    font-size:10.5px;
+    font-weight:600;
+    padding:3px 9px;
+    border-radius:20px;
+    display:inline-block;
+  }
+  .type-tag-pill.open{background:var(--green-100); color:var(--green-800);}
+  .type-tag-pill.screen{background:var(--maroon-100); color:var(--maroon-600);}
+
+  /* =========================================================
+     WIZARD SHELL (enrollment + screening forms)
+     ========================================================= */
+  .wizard-shell{
+    max-width:920px;
+    margin:0 auto;
+    padding:40px 28px 90px;
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:44px;
+  }
+  @media (max-width:760px){
+    .wizard-shell{grid-template-columns:1fr; padding:28px 20px 70px;}
+    .step-tracker{display:flex; overflow-x:auto; gap:18px; padding-bottom:8px;}
+    .step-tracker::before{display:none;}
+    .step{flex-direction:column; text-align:center; gap:6px;}
+  }
+
+  .step-tracker{position:relative;}
+  .step-tracker::before{
+    content:"";
+    position:absolute;
+    left:13px; top:8px; bottom:8px;
+    width:1px;
+    background:var(--line);
+  }
+  .step{
+    display:flex; align-items:flex-start; gap:14px;
+    position:relative;
+    padding-bottom:30px;
+  }
+  .step-num{
+    width:27px;height:27px;border-radius:50%;
+    background:var(--white);
+    border:1.5px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px; font-weight:700; color:var(--ink-400);
+    flex-shrink:0; z-index:1;
+    font-family:'Cormorant Garamond',serif;
+  }
+  .step.active .step-num{background:var(--green-900); border-color:var(--green-900); color:var(--white);}
+  .step.done .step-num{background:var(--gold-600); border-color:var(--gold-600); color:var(--white);}
+  .step-label{font-size:13px; font-weight:600; color:var(--ink-400); margin-top:3px;}
+  .step.active .step-label{color:var(--ink-900);}
+  .step.done .step-label{color:var(--ink-600);}
+  .step-sub{font-size:11px; color:var(--ink-400); margin-top:2px;}
+
+  .form-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    padding:30px 32px;
+    box-shadow:0 6px 20px rgba(28,59,46,0.06);
+  }
+  .form-card h2{font-size:22px; margin-bottom:4px;}
+  .form-card .form-sub{font-size:13px; color:var(--ink-600); margin-bottom:26px; font-family:'Inter',sans-serif;}
+
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block; font-size:12.5px; font-weight:600; color:var(--ink-600); margin-bottom:6px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-s);
+    font-size:14px; font-family:inherit; color:var(--ink-900);
+    background:var(--cream-050);
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none; border-color:var(--green-600);
+    box-shadow:0 0 0 3px var(--green-100);
+    background:var(--white);
+  }
+  .field-hint{font-size:11px; color:var(--ink-400); margin-top:4px;}
+  .row-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .row-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
+  @media (max-width:560px){.row-2,.row-3{grid-template-columns:1fr;}}
+
+  .fieldset-label{
+    font-size:12px; font-weight:700; letter-spacing:0.03em; color:var(--gold-700);
+    margin:26px 0 14px; padding-top:18px; border-top:1px solid var(--line-soft);
+  }
+  .fieldset-label:first-child{margin-top:0; padding-top:0; border-top:none;}
+
+  .upload-row{
+    display:flex; align-items:center; justify-content:space-between;
+    border:1px dashed var(--line);
+    border-radius:var(--radius-s);
+    padding:13px 16px;
+    margin-bottom:10px;
+    font-size:13px;
+  }
+  .upload-row .req-name{font-weight:600;}
+  .upload-row .req-note{font-size:11px; color:var(--ink-400); display:block; margin-top:2px;}
+  .upload-btn{
+    font-size:12px; font-weight:600;
+    border:1px solid var(--green-600); color:var(--green-800);
+    background:var(--white); padding:6px 13px; border-radius:20px;
+    flex-shrink:0; margin-left:14px;
+  }
+  .upload-btn:hover{background:var(--green-100);}
+  .upload-btn.uploaded{border-color:var(--gold-600); color:var(--gold-700); background:var(--gold-100);}
+
+  .wizard-actions{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:28px;
+  }
+  .btn-primary{
+    background:var(--green-900); color:var(--white); border:none;
+    padding:12px 24px; border-radius:var(--radius-s);
+    font-size:14px; font-weight:600;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover{background:var(--green-600);}
+  .btn-primary:focus-visible{outline:2px solid var(--gold-600); outline-offset:2px;}
+  .btn-ghost{
+    background:none; border:none; color:var(--ink-600); font-size:13.5px; font-weight:600; padding:10px 4px;
+  }
+  .btn-ghost:hover{color:var(--ink-900);}
+
+  /* payment step specifics */
+  .gcash-panel{
+    display:grid;
+    grid-template-columns:180px 1fr;
+    gap:26px;
+    background:var(--green-100);
+    border:1px solid #D3E2D8;
+    border-radius:var(--radius-m);
+    padding:22px;
+    margin-bottom:24px;
+    align-items:center;
+  }
+  @media (max-width:560px){.gcash-panel{grid-template-columns:1fr; text-align:center;}}
+  .qr-box{
+    width:150px; height:150px;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-s);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto;
+  }
+  .gcash-detail .gcash-label{font-size:11px; font-weight:700; color:var(--green-800); letter-spacing:0.04em; margin-bottom:4px;}
+  .gcash-detail .gcash-value{font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; color:var(--ink-900); margin-bottom:14px;}
+  .fee-line{display:flex; justify-content:space-between; font-size:13px; color:var(--ink-600); padding:4px 0;}
+  .fee-line.total{font-weight:700; color:var(--ink-900); border-top:1px solid var(--line); margin-top:6px; padding-top:10px;}
+  .gcash-only-note{
+    display:flex; gap:8px; align-items:flex-start;
+    font-size:11.5px; color:var(--ink-600); margin-top:12px; line-height:1.5;
+  }
+
+  /* review step */
+  .review-block{margin-bottom:20px;}
+  .review-block h5{
+    font-family:'Inter',sans-serif; font-size:12px; font-weight:700;
+    color:var(--gold-700); letter-spacing:0.03em; margin-bottom:10px;
+  }
+  .review-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:10px 24px;
+    font-size:13.5px;
+  }
+  .review-grid dt{color:var(--ink-400); font-size:11.5px; margin-bottom:2px;}
+  .review-grid dd{margin:0; font-weight:600;}
+  .review-edit{font-size:11.5px; color:var(--green-600); font-weight:600; background:none;border:none; padding:0;}
+
+  /* =========================================================
+     CONFIRMATION VIEW
+     ========================================================= 
+  .confirm-shell{
+    max-width:560px; margin:0 auto; padding:60px 24px 90px; text-align:center;
+  }
+  .stamp{
+    width:76px; height:76px; border-radius:50%;
+    border:2.5px solid var(--gold-600);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 22px;
+    color:var(--gold-700);
+    transform:rotate(-8deg);
+  }
+  .confirm-shell h1{font-size:28px; margin-bottom:10px;}
+  .confirm-shell > p{font-size:14px; color:var(--ink-600); margin-bottom:32px; line-height:1.6;}
+  .receipt-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    padding:26px 28px;
+    text-align:left;
+    box-shadow:0 8px 26px rgba(28,59,46,0.08);
+    margin-bottom:26px;
+  }
+  .receipt-row{
+    display:flex; justify-content:space-between;
+    font-size:13.5px; padding:9px 0;
+    border-bottom:1px dashed var(--line-soft);
+  }
+  .receipt-row:last-child{border-bottom:none;}
+  .receipt-row span:first-child{color:var(--ink-600);}
+  .receipt-row span:last-child{font-weight:600;}
+  .status-pill{
+    font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px;
+    background:var(--gold-100); color:var(--gold-700);
+  }
+  .confirm-actions{display:flex; gap:12px; justify-content:center;}
+  .btn-outline{
+    border:1px solid var(--line); background:var(--white); color:var(--ink-900);
+    padding:11px 20px; border-radius:var(--radius-s); font-size:13.5px; font-weight:600;
+  }
+  .btn-outline:hover{border-color:var(--green-600);}
+
+  /* =========================================================
+     STAFF / REGISTRAR DASHBOARD
+     ========================================================= */
+  .staff-shell{background:var(--cream-050); min-height:100vh;}
+  .staff-topbar{
+    background:var(--white); border-bottom:1px solid var(--line);
+    padding:16px 32px; display:flex; justify-content:space-between; align-items:center;
+  }
+  .staff-topbar h2{font-size:17px; font-family:'Inter',sans-serif; font-weight:700;}
+  .staff-user{font-size:12.5px; color:var(--ink-600);}
+  .staff-body{max-width:1200px; margin:0 auto; padding:30px 28px 70px;}
+
+  .staff-stats{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:26px;
+  }
+  @media (max-width:760px){.staff-stats{grid-template-columns:1fr 1fr;}}
+  .staff-stat{
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius-m);
+    padding:16px 18px;
+  }
+  .staff-stat .n{font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600;}
+  .staff-stat .l{font-size:11.5px; color:var(--ink-600); margin-top:2px;}
+  .staff-stat.flag .n{color:var(--maroon-600);}
+  .staff-stat.gold .n{color:var(--gold-700);}
+  .staff-stat.green .n{color:var(--green-700, var(--green-600));}
+
+  .table-toolbar{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    margin-bottom:14px; flex-wrap:wrap;
+  }
+  .search-box{
+    flex:1; min-width:200px;
+    display:flex; align-items:center; gap:8px;
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius-s);
+    padding:9px 12px; font-size:13px; color:var(--ink-400);
+  }
+  .filter-pills{display:flex; gap:8px; flex-wrap:wrap;}
+  .filter-pill{
+    font-size:12px; font-weight:600; padding:6px 13px; border-radius:20px;
+    border:1px solid var(--line); background:var(--white); color:var(--ink-600);
+  }
+  .filter-pill.active{background:var(--green-900); border-color:var(--green-900); color:var(--white);}
+
+  .record-table{
+    width:100%; border-collapse:collapse;
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius-m);
+    overflow:hidden;
+    font-size:13px;
+  }
+  .record-table th{
+    text-align:left; font-size:11px; text-transform:none; letter-spacing:0.02em;
+    color:var(--ink-400); font-weight:700; padding:12px 16px; background:var(--green-100);
+    border-bottom:1px solid var(--line);
+  }
+  .record-table td{
+    padding:13px 16px; border-bottom:1px solid var(--line-soft); vertical-align:middle;
+  }
+  .record-table tr:last-child td{border-bottom:none;}
+  .record-table tbody tr{cursor:pointer; transition:background .1s ease;}
+  .record-table tbody tr:hover{background:var(--cream-050);}
+  .stud-name{font-weight:600;}
+  .stud-lrn{font-size:11px; color:var(--ink-400);}
+
+  .badge{font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; display:inline-block;}
+  .badge.paid{background:var(--green-100); color:var(--green-800);}
+  .badge.unpaid{background:var(--maroon-100); color:var(--maroon-600);}
+  .badge.pending{background:var(--gold-100); color:var(--gold-700);}
+  .badge.approved{background:var(--green-100); color:var(--green-800);}
+  .badge.screening{background:var(--maroon-100); color:var(--maroon-600);}
+
+  /* record detail drawer */
+  .drawer-overlay{
+    position:fixed; inset:0; background:rgba(28,32,26,0.4);
+    display:none; z-index:50;
+  }
+  .drawer-overlay.open{display:block;}
+  .drawer{
+    position:fixed; top:0; right:0; bottom:0; width:400px; max-width:92vw;
+    background:var(--white); z-index:51;
+    padding:26px 28px; overflow-y:auto;
+    box-shadow:-8px 0 30px rgba(0,0,0,0.15);
+    transform:translateX(100%);
+    transition:transform .18s ease;
+  }
+  .drawer-overlay.open .drawer{transform:translateX(0);}
+  .drawer-close{
+    background:none; border:none; font-size:13px; color:var(--ink-600); margin-bottom:18px; font-weight:600;
+  }
+  .drawer h3{font-size:20px; margin-bottom:2px;}
+  .drawer .drawer-lrn{font-size:12px; color:var(--ink-400); margin-bottom:20px;}
+  .drawer-section{margin-bottom:20px;}
+  .drawer-section h5{
+    font-size:11px; font-weight:700; letter-spacing:0.03em; color:var(--gold-700); margin-bottom:10px;
+  }
+  .drawer-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px 16px; font-size:13px;}
+  .drawer-grid dt{color:var(--ink-400); font-size:11px;}
+  .drawer-grid dd{margin:0; font-weight:600;}
+  .doc-row{
+    display:flex; align-items:center; justify-content:between; gap:10px;
+    border:1px solid var(--line); border-radius:var(--radius-s);
+    padding:9px 12px; font-size:12.5px; margin-bottom:8px;
+    justify-content:space-between;
+  }
+  .doc-status{font-size:11px; color:var(--green-700, var(--green-600)); font-weight:600;}
+  .drawer-actions{display:flex; gap:10px; margin-top:22px;}
+  .btn-approve{
+    flex:1; background:var(--green-900); color:var(--white); border:none;
+    padding:11px; border-radius:var(--radius-s); font-size:13px; font-weight:700;
+  }
+  .btn-approve:hover{background:var(--green-600);}
+  .btn-flag{
+    flex:1; background:var(--white); border:1px solid var(--maroon-600); color:var(--maroon-600);
+    padding:11px; border-radius:var(--radius-s); font-size:13px; font-weight:700;
+  }
+  .btn-flag:hover{background:var(--maroon-100);}
+
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--ink-600);
+    margin-bottom:16px; border:none; background:none; padding:0;
+  }
+  .back-link:hover{color:var(--green-700, var(--green-600));}
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     LANDING VIEW
+     ========================================================= -->
+<div data-view="landing" class="active">
+  <header class="site-header">
+    <div class="crest-mark">
+      <div class="crest">C</div>
+      <div class="school-name">Calabrian Formation School, Inc.
+        <small>ENROLLMENT PORTAL · SY 2026&ndash;2027</small>
+      </div>
+    </div>
+    <div class="header-links">
+      <a href="#">Requirements</a>
+      <a href="#">Tuition</a>
+      <a href="#">Contact</a>
+      <button class="staff-link" onclick="showView('staffLogin')">Registrar sign-in</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">ENROLLMENT NOW OPEN</div>
+      <h1>Enroll online — no more standing in line at the registrar's office.</h1>
+      <p>Submit your child's records, requirements, and GCash payment from home. Track your application status without a follow-up call.</p>
+      <button class="btn-gold" onclick="scrollToTypes()">Begin enrollment</button>
+    </div>
+  </section>
+
+  <div class="landing-body">
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="num">Gr.1&ndash;6</div>
+        <h4>Grade levels offered</h4>
+        <p>Elementary enrollment is open for Grade 1 through Grade 6 for School Year 2026&ndash;2027.</p>
+      </div>
+      <div class="info-card">
+        <div class="num">GCash</div>
+        <h4>Payment method</h4>
+        <p>Enrollment fees are collected through GCash only. You'll receive a reference number and digital receipt.</p>
+      </div>
+      <div class="info-card">
+        <div class="num">1&ndash;2 days</div>
+        <h4>Review time</h4>
+        <p>The registrar's office reviews and confirms most applications within one to two working days.</p>
+      </div>
+    </div>
+
+    <div class="screening-flag">
+      <div class="flag-icon">!</div>
+      <div>
+        <h4>Kindergarten applicants and transferees need screening first</h4>
+        <p>These two groups can't enroll directly online. Instead, you'll fill out a short screening request below, and the school will contact you to schedule an assessment before enrollment and payment proceed.</p>
+      </div>
+    </div>
+
+    <div id="type-select-anchor">
+      <p class="type-select-label">What are you enrolling for?</p>
+      <div class="type-grid">
+        <button class="type-card" onclick="startEnrollment('new')">
+          <span class="type-tag-pill open">Opens enrollment</span>
+          <h4 style="margin-top:10px;">New Student — Grade 1</h4>
+          <p>First-time entrant to Calabrian, coming from a Kindergarten graduate of another school.</p>
+        </button>
+        <button class="type-card" onclick="startEnrollment('continuing')">
+          <span class="type-tag-pill open">Opens enrollment</span>
+          <h4 style="margin-top:10px;">Continuing Student — Gr. 2&ndash;6</h4>
+          <p>Currently enrolled at Calabrian and moving up to the next grade level.</p>
+        </button>
+        <button class="type-card" onclick="startScreening('kinder')">
+          <span class="type-tag-pill screen">Requires screening</span>
+          <h4 style="margin-top:10px;">Kindergarten Applicant</h4>
+          <p>Not yet offered for direct online enrollment. Request a screening schedule instead.</p>
+        </button>
+        <button class="type-card" onclick="startScreening('transferee')">
+          <span class="type-tag-pill screen">Requires screening</span>
+          <h4 style="margin-top:10px;">Transferee — Any Grade</h4>
+          <p>Currently enrolled at another school. An assessment is required before enrollment.</p>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     ENROLLMENT WIZARD (new / continuing)
+     ========================================================= -->
+<div data-view="wizard">
+  <header class="site-header">
+    <div class="crest-mark">
+      <div class="crest">C</div>
+      <div class="school-name">Calabrian Formation School, Inc.<small>ENROLLMENT APPLICATION</small></div>
+    </div>
+    <button class="btn-ghost" style="color:rgba(255,255,255,0.75);" onclick="showView('landing')">Save &amp; exit</button>
+  </header>
+
+  <div class="wizard-shell">
+    <div class="step-tracker" id="step-tracker"></div>
+
+    <div class="form-card">
+      <!-- STEP 1 -->
+      <div class="wizard-step" data-step="1">
+        <h2>Student information</h2>
+        <p class="form-sub" id="step1-sub">Applying as: New Student, Grade 1</p>
+
+        <div class="fieldset-label">Learner details</div>
+        <div class="row-2">
+          <div class="field"><label>Last name</label><input type="text" placeholder="Dela Cruz"></div>
+          <div class="field"><label>First name</label><input type="text" placeholder="Miguel"></div>
+        </div>
+        <div class="row-3">
+          <div class="field"><label>Date of birth</label><input type="date"></div>
+          <div class="field"><label>Sex</label>
+            <select><option>Male</option><option>Female</option></select>
+          </div>
+          <div class="field"><label>Grade level</label>
+            <select id="grade-select"><option>Grade 1</option></select>
+          </div>
+        </div>
+        <div class="field"><label>Home address</label><input type="text" placeholder="123 Rizal St., Brgy. San Isidro"></div>
+        <div class="field" id="lrn-field" style="display:none;">
+          <label>LRN (Learner Reference Number)</label>
+          <input type="text" placeholder="1234 5678 9012">
+          <div class="field-hint">Only applicable for continuing or transferee students already assigned an LRN.</div>
+        </div>
+
+        <div class="wizard-actions">
+          <span></span>
+          <button class="btn-primary" onclick="nextStep()">Continue to guardian info</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="wizard-step" data-step="2" style="display:none;">
+        <h2>Parent / guardian information</h2>
+        <p class="form-sub">This person will be the primary contact for enrollment and billing.</p>
+
+        <div class="fieldset-label">Primary guardian</div>
+        <div class="row-2">
+          <div class="field"><label>Full name</label><input type="text" placeholder="Elena Dela Cruz"></div>
+          <div class="field"><label>Relationship to student</label>
+            <select><option>Mother</option><option>Father</option><option>Legal guardian</option></select>
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label>Mobile number</label><input type="tel" placeholder="09XX XXX XXXX"></div>
+          <div class="field"><label>Email address</label><input type="email" placeholder="elena.delacruz@email.com"></div>
+        </div>
+
+        <div class="fieldset-label">Emergency contact</div>
+        <div class="row-2">
+          <div class="field"><label>Full name</label><input type="text" placeholder="Roberto Dela Cruz"></div>
+          <div class="field"><label>Mobile number</label><input type="tel" placeholder="09XX XXX XXXX"></div>
+        </div>
+
+        <div class="wizard-actions">
+          <button class="btn-ghost" onclick="prevStep()">Back</button>
+          <button class="btn-primary" onclick="nextStep()">Continue to requirements</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="wizard-step" data-step="3" style="display:none;">
+        <h2>Requirements</h2>
+        <p class="form-sub">Upload clear photos or scans. Accepted formats: JPG, PNG, PDF.</p>
+
+        <div class="upload-row">
+          <div><span class="req-name">PSA birth certificate</span><span class="req-note">Original or certified true copy</span></div>
+          <button class="upload-btn" onclick="toggleUpload(this)">Upload</button>
+        </div>
+        <div class="upload-row">
+          <div><span class="req-name">Report card / Form 138</span><span class="req-note">From previous school year</span></div>
+          <button class="upload-btn" onclick="toggleUpload(this)">Upload</button>
+        </div>
+        <div class="upload-row">
+          <div><span class="req-name">Good moral certificate</span><span class="req-note">From previous school, if applicable</span></div>
+          <button class="upload-btn" onclick="toggleUpload(this)">Upload</button>
+        </div>
+        <div class="upload-row">
+          <div><span class="req-name">2x2 ID photo</span><span class="req-note">White background, taken within the last 6 months</span></div>
+          <button class="upload-btn" onclick="toggleUpload(this)">Upload</button>
+        </div>
+
+        <div class="wizard-actions">
+          <button class="btn-ghost" onclick="prevStep()">Back</button>
+          <button class="btn-primary" onclick="nextStep()">Continue to payment</button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="wizard-step" data-step="4" style="display:none;">
+        <h2>Enrollment payment</h2>
+        <p class="form-sub">Calabrian Formation School accepts enrollment payments through GCash only.</p>
+
+        <div class="gcash-panel">
+          <div class="qr-box">
+            <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+              <rect width="90" height="90" rx="6" fill="#F3F2EC"/>
+              <g fill="#1C3B2E">
+                <rect x="8" y="8" width="20" height="20"/><rect x="12" y="12" width="12" height="12" fill="#F3F2EC"/><rect x="16" y="16" width="4" height="4" fill="#1C3B2E"/>
+                <rect x="62" y="8" width="20" height="20"/><rect x="66" y="12" width="12" height="12" fill="#F3F2EC"/><rect x="70" y="16" width="4" height="4" fill="#1C3B2E"/>
+                <rect x="8" y="62" width="20" height="20"/><rect x="12" y="66" width="12" height="12" fill="#F3F2EC"/><rect x="16" y="70" width="4" height="4" fill="#1C3B2E"/>
+                <rect x="38" y="8" width="4" height="4"/><rect x="46" y="8" width="4" height="4"/><rect x="38" y="16" width="4" height="4"/>
+                <rect x="38" y="38" width="14" height="14"/><rect x="60" y="38" width="4" height="4"/><rect x="68" y="38" width="4" height="4"/>
+                <rect x="38" y="60" width="4" height="4"/><rect x="46" y="60" width="4" height="4"/><rect x="60" y="60" width="14" height="14"/>
+                <rect x="38" y="68" width="4" height="4"/><rect x="60" y="76" width="4" height="4"/><rect x="76" y="60" width="4" height="4"/>
+              </g>
+            </svg>
+          </div>
+          <div class="gcash-detail">
+            <div class="gcash-label">SCAN TO PAY OR SEND TO</div>
+            <div class="gcash-value">0917 234 5678</div>
+            <div class="fee-line"><span>Enrollment fee</span><span>₱ 3,000.00</span></div>
+            <div class="fee-line"><span>Books &amp; modules</span><span>₱ 1,800.00</span></div>
+            <div class="fee-line"><span>Miscellaneous fee</span><span>₱ 650.00</span></div>
+            <div class="fee-line total"><span>Total due</span><span>₱ 5,450.00</span></div>
+          </div>
+        </div>
+
+        <div class="field"><label>GCash reference number</label><input type="text" placeholder="e.g. 0123456789012"></div>
+        <div class="upload-row">
+          <div><span class="req-name">Proof of payment</span><span class="req-note">Screenshot of your GCash payment confirmation</span></div>
+          <button class="upload-btn" onclick="toggleUpload(this)">Upload</button>
+        </div>
+        <div class="gcash-only-note">
+          Payments outside GCash (cash, bank deposit, checks) currently can't be processed through this portal — please coordinate with the registrar's office directly for other arrangements.
+        </div>
+
+        <div class="wizard-actions">
+          <button class="btn-ghost" onclick="prevStep()">Back</button>
+          <button class="btn-primary" onclick="nextStep()">Continue to review</button>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="wizard-step" data-step="5" style="display:none;">
+        <h2>Review your application</h2>
+        <p class="form-sub">Please check everything before submitting. You can still edit any section.</p>
+
+        <div class="review-block">
+          <h5>STUDENT</h5>
+          <dl class="review-grid">
+            <div><dt>Name</dt><dd>Miguel Dela Cruz</dd></div>
+            <div><dt>Grade level</dt><dd id="review-grade">Grade 1</dd></div>
+            <div><dt>Date of birth</dt><dd>June 14, 2020</dd></div>
+            <div><dt>Address</dt><dd>Brgy. San Isidro</dd></div>
+          </dl>
+          <button class="review-edit" onclick="goToStep(1)">Edit</button>
+        </div>
+
+        <div class="review-block">
+          <h5>GUARDIAN</h5>
+          <dl class="review-grid">
+            <div><dt>Name</dt><dd>Elena Dela Cruz</dd></div>
+            <div><dt>Mobile</dt><dd>0917 111 2233</dd></div>
+          </dl>
+          <button class="review-edit" onclick="goToStep(2)">Edit</button>
+        </div>
+
+        <div class="review-block">
+          <h5>PAYMENT</h5>
+          <dl class="review-grid">
+            <div><dt>Method</dt><dd>GCash</dd></div>
+            <div><dt>Total due</dt><dd>₱5,450.00</dd></div>
+          </dl>
+          <button class="review-edit" onclick="goToStep(4)">Edit</button>
+        </div>
+
+        <div class="wizard-actions">
+          <button class="btn-ghost" onclick="prevStep()">Back</button>
+          <button class="btn-primary" onclick="submitApplication()">Submit application</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     SCREENING REQUEST (kindergarten / transferee)
+     ========================================================= -->
+<div data-view="screening">
+  <header class="site-header">
+    <div class="crest-mark">
+      <div class="crest">C</div>
+      <div class="school-name">Calabrian Formation School, Inc.<small>SCREENING REQUEST</small></div>
+    </div>
+    <button class="btn-ghost" style="color:rgba(255,255,255,0.75);" onclick="showView('landing')">Cancel</button>
+  </header>
+
+  <div class="wizard-shell" style="grid-template-columns:1fr; max-width:600px;">
+    <div class="form-card">
+      <h2 id="screen-title">Request a screening — Kindergarten</h2>
+      <p class="form-sub" id="screen-sub">Kindergarten applicants are assessed before enrollment opens. Fill this out and the registrar's office will text you a schedule.</p>
+
+      <div class="fieldset-label">Child's details</div>
+      <div class="row-2">
+        <div class="field"><label>Full name</label><input type="text" placeholder="Sofia Ramirez"></div>
+        <div class="field"><label>Date of birth</label><input type="date"></div>
+      </div>
+      <div class="field" id="screen-prev-school" style="display:none;">
+        <label>Current / previous school</label><input type="text" placeholder="St. Anne Learning Center">
+      </div>
+      <div class="field" id="screen-target-grade" style="display:none;">
+        <label>Grade level applying for</label>
+        <select><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option></select>
+      </div>
+
+      <div class="fieldset-label">Guardian contact</div>
+      <div class="row-2">
+        <div class="field"><label>Guardian name</label><input type="text" placeholder="Maria Ramirez"></div>
+        <div class="field"><label>Mobile number</label><input type="tel" placeholder="09XX XXX XXXX"></div>
+      </div>
+      <div class="field"><label>Preferred schedule</label>
+        <select><option>Weekday morning</option><option>Weekday afternoon</option><option>Saturday</option></select>
+      </div>
+
+      <div class="wizard-actions">
+        <button class="btn-ghost" onclick="showView('landing')">Back</button>
+        <button class="btn-primary" onclick="submitScreening()">Request screening</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     CONFIRMATION VIEW
+     ========================================================= -->
+<div data-view="confirm">
+  <header class="site-header">
+    <div class="crest-mark">
+      <div class="crest">C</div>
+      <div class="school-name">Calabrian Formation School, Inc.<small>ENROLLMENT PORTAL</small></div>
+    </div>
+  </header>
+  <div class="confirm-shell">
+    <div class="stamp">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <h1 id="confirm-heading">Application received</h1>
+    <p id="confirm-copy">Your enrollment application has been submitted. The registrar's office will verify your payment and documents within 1&ndash;2 working days.</p>
+
+    <div class="receipt-card">
+      <div class="receipt-row"><span>Application no.</span><span>CFS-2026-04821</span></div>
+      <div class="receipt-row"><span>Student</span><span id="confirm-student">Miguel Dela Cruz</span></div>
+      <div class="receipt-row"><span>Grade level</span><span id="confirm-grade">Grade 1</span></div>
+      <div class="receipt-row"><span>Amount paid (GCash)</span><span id="confirm-amount">₱5,450.00</span></div>
+      <div class="receipt-row"><span>Status</span><span class="status-pill" id="confirm-status">Pending Verification</span></div>
+    </div>
+
+    <div class="confirm-actions">
+      <button class="btn-outline" onclick="showView('landing')">Return home</button>
+      <button class="btn-gold" style="color:var(--green-900);" onclick="showView('staffLogin')">View as registrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     STAFF LOGIN (simple gate)
+     ========================================================= -->
+<div data-view="staffLogin">
+  <div class="hero" style="padding:60px 24px;">
+    <div class="hero-inner" style="max-width:360px;">
+      <div class="hero-eyebrow">REGISTRAR ACCESS</div>
+      <h1 style="font-size:26px;">Staff sign-in</h1>
+      <div style="text-align:left; margin-top:24px;">
+        <div class="field"><label style="color:rgba(255,255,255,0.7);">Staff email</label><input type="email" value="registrar@calabrianfs.edu.ph"></div>
+        <div class="field"><label style="color:rgba(255,255,255,0.7);">Password</label><input type="password" value="••••••••"></div>
+        <button class="btn-gold" style="width:100%; margin-top:6px;" onclick="showView('staff')">Sign in</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     STAFF / REGISTRAR DASHBOARD
+     ========================================================= -->
+<div data-view="staff">
+  <div class="staff-shell">
+    <header class="staff-topbar">
+      <h2>Enrollment records — SY 2026&ndash;2027</h2>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <span class="staff-user">Registrar · Ana Castro</span>
+        <button class="staff-link" style="color:var(--ink-600); border-color:var(--line);" onclick="showView('landing')">Sign out</button>
+      </div>
+    </header>
+
+    <div class="staff-body">
+      <div class="staff-stats">
+        <div class="staff-stat">
+          <div class="n">248</div>
+          <div class="l">Total applications this year</div>
+        </div>
+        <div class="staff-stat gold">
+          <div class="n">31</div>
+          <div class="l">Awaiting payment verification</div>
+        </div>
+        <div class="staff-stat green">
+          <div class="n">204</div>
+          <div class="l">Approved &amp; confirmed</div>
+        </div>
+        <div class="staff-stat flag">
+          <div class="n">13</div>
+          <div class="l">Flagged for screening</div>
+        </div>
+      </div>
+
+      <div class="table-toolbar">
+        <div class="search-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          Search by student name or application no.
+        </div>
+        <div class="filter-pills">
+          <button class="filter-pill active">All</button>
+          <button class="filter-pill">Unpaid</button>
+          <button class="filter-pill">Pending review</button>
+          <button class="filter-pill">Screening</button>
+        </div>
+      </div>
+
+      <table class="record-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Grade</th>
+            <th>Type</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Submitted</th>
+          </tr>
+        </thead>
+        <tbody id="record-rows"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- record detail drawer -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer(event)">
+  <div class="drawer" onclick="event.stopPropagation()">
+    <button class="drawer-close" onclick="closeDrawer()">✕ Close</button>
+    <h3 id="drawer-name">Miguel Dela Cruz</h3>
+    <div class="drawer-lrn" id="drawer-lrn">App. No. CFS-2026-04821</div>
+
+    <div class="drawer-section">
+      <h5>APPLICATION SUMMARY</h5>
+      <dl class="drawer-grid">
+        <div><dt>Grade level</dt><dd id="drawer-grade">Grade 1</dd></div>
+        <div><dt>Type</dt><dd id="drawer-type">New student</dd></div>
+        <div><dt>Guardian</dt><dd id="drawer-guardian">Elena Dela Cruz</dd></div>
+        <div><dt>Contact</dt><dd id="drawer-contact">0917 111 2233</dd></div>
+      </dl>
+    </div>
+
+    <div class="drawer-section">
+      <h5>PAYMENT</h5>
+      <div class="doc-row">
+        <span>GCash · Ref# 011223344556</span>
+        <span class="doc-status" id="drawer-payment-status">Verified</span>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <h5>DOCUMENTS</h5>
+      <div class="doc-row"><span>PSA birth certificate</span><span class="doc-status">Uploaded</span></div>
+      <div class="doc-row"><span>Report card / Form 138</span><span class="doc-status">Uploaded</span></div>
+      <div class="doc-row"><span>2x2 ID photo</span><span class="doc-status">Uploaded</span></div>
+    </div>
+
+    <div class="drawer-actions">
+      <button class="btn-approve">Approve enrollment</button>
+      <button class="btn-flag">Flag for follow-up</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const stepMeta = [
+    { label: "Student info", sub: "Basic details" },
+    { label: "Guardian info", sub: "Contact & billing" },
+    { label: "Requirements", sub: "Document upload" },
+    { label: "Payment", sub: "GCash only" },
+    { label: "Review", sub: "Submit application" },
+  ];
+  let currentStep = 1;
+  let enrollmentType = 'new';
+
+  function renderTracker(){
+    const el = document.getElementById('step-tracker');
+    el.innerHTML = stepMeta.map((s,i)=>{
+      const n = i+1;
+      const cls = n < currentStep ? 'done' : (n === currentStep ? 'active' : '');
+      return '<div class="step ' + cls + '">' +
+        '<div class="step-num">' + (n < currentStep ? '✓' : n) + '</div>' +
+        '<div><div class="step-label">' + s.label + '</div><div class="step-sub">' + s.sub + '</div></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function showView(name){
+    document.querySelectorAll('[data-view]').forEach(el => el.classList.remove('active'));
+    document.querySelector('[data-view="' + name + '"]').classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  function scrollToTypes(){
+    document.getElementById('type-select-anchor').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function startEnrollment(type){
+    enrollmentType = type;
+    currentStep = 1;
+    document.querySelectorAll('.wizard-step').forEach(s => s.style.display = 'none');
+    document.querySelector('.wizard-step[data-step="1"]').style.display = 'block';
+
+    const gradeSelect = document.getElementById('grade-select');
+    const lrnField = document.getElementById('lrn-field');
+    const sub = document.getElementById('step1-sub');
+
+    if(type === 'new'){
+      gradeSelect.innerHTML = '<option>Grade 1</option>';
+      lrnField.style.display = 'none';
+      sub.textContent = 'Applying as: New Student, Grade 1';
+    } else {
+      gradeSelect.innerHTML = '<option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>';
+      lrnField.style.display = 'block';
+      sub.textContent = 'Applying as: Continuing Student';
+    }
+    renderTracker();
+    showView('wizard');
+  }
+
+  function startScreening(type){
+    const title = document.getElementById('screen-title');
+    const sub = document.getElementById('screen-sub');
+    const prevSchool = document.getElementById('screen-prev-school');
+    const targetGrade = document.getElementById('screen-target-grade');
+
+    if(type === 'kinder'){
+      title.textContent = 'Request a screening — Kindergarten';
+      sub.textContent = "Kindergarten applicants are assessed before enrollment opens. Fill this out and the registrar's office will text you a schedule.";
+      prevSchool.style.display = 'none';
+      targetGrade.style.display = 'none';
+    } else {
+      title.textContent = 'Request a screening — Transferee';
+      sub.textContent = "Transferees from other schools need a short assessment first. Fill this out and the registrar's office will text you a schedule.";
+      prevSchool.style.display = 'block';
+      targetGrade.style.display = 'block';
+    }
+    showView('screening');
+  }
+
+  function nextStep(){
+    if(currentStep < 5){
+      document.querySelector('.wizard-step[data-step="' + currentStep + '"]').style.display = 'none';
+      currentStep++;
+      document.querySelector('.wizard-step[data-step="' + currentStep + '"]').style.display = 'block';
+      renderTracker();
+      window.scrollTo(0,0);
+    }
+  }
+  function prevStep(){
+    if(currentStep > 1){
+      document.querySelector('.wizard-step[data-step="' + currentStep + '"]').style.display = 'none';
+      currentStep--;
+      document.querySelector('.wizard-step[data-step="' + currentStep + '"]').style.display = 'block';
+      renderTracker();
+      window.scrollTo(0,0);
+    }
+  }
+  function goToStep(n){
+    document.querySelector('.wizard-step[data-step="' + currentStep + '"]').style.display = 'none';
+    currentStep = n;
+    document.querySelector('.wizard-step[data-step="' + currentStep + '"]').style.display = 'block';
+    renderTracker();
+    window.scrollTo(0,0);
+  }
+
+  function toggleUpload(btn){
+    const uploaded = btn.classList.toggle('uploaded');
+    btn.textContent = uploaded ? 'Uploaded ✓' : 'Upload';
+  }
+
+  function submitApplication(){
+    document.getElementById('confirm-heading').textContent = 'Application received';
+    document.getElementById('confirm-copy').textContent = "Your enrollment application has been submitted. The registrar's office will verify your payment and documents within 1–2 working days.";
+    showView('confirm');
+  }
+
+  function submitScreening(){
+    document.getElementById('confirm-heading').textContent = 'Screening request sent';
+    document.getElementById('confirm-copy').textContent = "Thank you. The registrar's office will text you within 2 working days to schedule your child's assessment. Enrollment and payment will open after screening.";
+    document.getElementById('confirm-status').textContent = 'For Screening';
+    document.getElementById('confirm-status').className = 'status-pill';
+    document.getElementById('confirm-status').style.background = 'var(--maroon-100)';
+    document.getElementById('confirm-status').style.color = 'var(--maroon-600)';
+    showView('confirm');
+  }
+
+  // ---- registrar table (mock data) ----
+  const records = [
+    { name:"Miguel Dela Cruz", lrn:"App. CFS-2026-04821", grade:"Grade 1", type:"New", payment:"paid", status:"approved", date:"Sep 2" },
+    { name:"Andrea Villanueva", lrn:"App. CFS-2026-04822", grade:"Grade 4", type:"Continuing", payment:"pending", status:"pending", date:"Sep 3" },
+    { name:"Josh Fernandez", lrn:"App. CFS-2026-04823", grade:"Grade 2", type:"Transferee", payment:"unpaid", status:"screening", date:"Sep 3" },
+    { name:"Bea Santos", lrn:"App. CFS-2026-04824", grade:"Grade 6", type:"Continuing", payment:"paid", status:"approved", date:"Sep 4" },
+    { name:"Carlo Mendoza", lrn:"App. CFS-2026-04825", grade:"Grade 3", type:"Continuing", payment:"pending", status:"pending", date:"Sep 5" },
+    { name:"Kylie Reyes", lrn:"Kindergarten screening", grade:"Kinder", type:"Kindergarten", payment:"unpaid", status:"screening", date:"Sep 5" },
+    { name:"Nathan Cruz", lrn:"App. CFS-2026-04827", grade:"Grade 5", type:"Continuing", payment:"paid", status:"approved", date:"Sep 6" },
+    { name:"Pia Aguilar", lrn:"App. CFS-2026-04828", grade:"Grade 1", type:"New", payment:"pending", status:"pending", date:"Sep 7" },
+  ];
+
+  const statusLabel = { approved:"Approved", pending:"Pending review", screening:"For screening" };
+  const paymentLabel = { paid:"Paid", pending:"Pending", unpaid:"Unpaid" };
+
+  function renderRecords(){
+    const tbody = document.getElementById('record-rows');
+    tbody.innerHTML = records.map((r,i) => `
+      <tr onclick="openDrawer(${i})">
+        <td><div class="stud-name">${r.name}</div><div class="stud-lrn">${r.lrn}</div></td>
+        <td>${r.grade}</td>
+        <td>${r.type}</td>
+        <td><span class="badge ${r.payment}">${paymentLabel[r.payment]}</span></td>
+        <td><span class="badge ${r.status}">${statusLabel[r.status]}</span></td>
+        <td>${r.date}</td>
+      </tr>
+    `).join('');
+  }
+
+  function openDrawer(i){
+    const r = records[i];
+    document.getElementById('drawer-name').textContent = r.name;
+    document.getElementById('drawer-lrn').textContent = r.lrn;
+    document.getElementById('drawer-grade').textContent = r.grade;
+    document.getElementById('drawer-type').textContent = r.type;
+    document.getElementById('drawer-payment-status').textContent = r.payment === 'paid' ? 'Verified' : (r.payment === 'pending' ? 'Awaiting verification' : 'Not yet paid');
+    document.getElementById('drawer-overlay').classList.add('open');
+  }
+  function closeDrawer(e){
+    document.getElementById('drawer-overlay').classList.remove('open');
+  }
+
+  renderTracker();
+  renderRecords();
+</script>
+
+</body>
+</html>
